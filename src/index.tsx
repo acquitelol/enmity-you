@@ -1,31 +1,30 @@
+import { FormArrow, FormDivider, FormRow, FormSection, View } from 'enmity/components'; 
+import { React, StyleSheet, Constants } from 'enmity/metro/common'; 
+import { findInReactTree } from 'enmity/utilities';
+import { getIDByName } from 'enmity/api/assets';
+import { bulk, filters } from 'enmity/metro';
 import { Plugin, registerPlugin } from 'enmity/managers/plugins'; 
 import { create } from 'enmity/patcher'; 
 import manifest from '../manifest.json'; 
-import { React, StyleSheet } from 'enmity/metro/common'; 
-import { FormArrow, FormDivider, FormRow, FormSection, View } from 'enmity/components'; 
-import { bulk, filters } from 'enmity/metro';
- import { getIDByName } from 'enmity/api/assets';
-import { findInReactTree } from 'enmity/utilities';
-import { Constants } from 'enmity/metro/common';
 
 const Patcher = create(manifest.name);
 
 const [
+   SettingsOverviewScreen,
    Screens,
    Titles,
-   SettingsOverviewScreen,
    UserStore,
-   getScreens,
    Locale,
-   Icon
+   Icon,
+   getScreens,
 ] = bulk(
+   filters.byName("SettingsOverviewScreen", false),
    filters.byProps("useSettingScreen"),
    filters.byProps("useSettingTitle"),
-   filters.byName("SettingsOverviewScreen", false),
    filters.byProps("getCurrentUser", "getUser"),
-   filters.byName("getScreens"),
    filters.byProps("Messages"),
-   filters.byName("Icon")
+   filters.byName("Icon"),
+   filters.byName("getScreens")
 )
 
 const styles = StyleSheet.createThemedStyleSheet({
