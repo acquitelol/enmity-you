@@ -1,5 +1,5 @@
 import { FormArrow, FormDivider, FormRow, FormSection, View } from 'enmity/components'; 
-import { React, StyleSheet, ColorMap } from 'enmity/metro/common'; 
+import { React, StyleSheet, ColorMap, Users, Locale, NavigationNative } from 'enmity/metro/common'; 
 import { findInReactTree } from 'enmity/utilities';
 import { getIDByName } from 'enmity/api/assets';
 import { bulk, filters } from 'enmity/metro';
@@ -13,16 +13,12 @@ const [
    SettingsOverviewScreen,
    Screens,
    Titles,
-   UserStore,
-   Locale,
    Icon,
    getScreens,
 ] = bulk(
    filters.byName("SettingsOverviewScreen", false),
    filters.byProps("useSettingScreen"),
    filters.byProps("useSettingTitle"),
-   filters.byProps("getCurrentUser", "getUser"),
-   filters.byProps("Messages"),
    filters.byName("Icon"),
    filters.byName("getScreens")
 )
@@ -45,7 +41,7 @@ const EnmityYou: Plugin = {
    ...manifest, 
    onStart() {
       Patcher.after(Screens, "useSettingScreens", (_, __, res) => {
-         const { Enmity, EnmityPlugins, EnmityThemes } = getScreens(UserStore.getCurrentUser());
+         const { Enmity, EnmityPlugins, EnmityThemes } = getScreens(Users.getCurrentUser());
          res = { ...res }
          
          Object.assign(res, { 
@@ -63,8 +59,16 @@ const EnmityYou: Plugin = {
             },
             ENMITY_PAGE: {
                route: "EnmityCustomPage",
-               getComponent: () => ({ route: { params: { pagePanel } } }) => {
-                  const Component = pagePanel ?? View;
+               getComponent: () => ({ navigation, route: { params } }) => {
+                  const Component = params.pagePanel ?? View;
+                  
+                  React.useEffect(() => {
+                     if (params.pageName && !params.hasSetTitle) {
+                        Object.assign(params, { hasSetTitle: true })
+                        navigation.setOptions({ title: params.pageName })
+                     }
+                  }, [])
+
                   return <Component />;
                },
             }
@@ -73,14 +77,12 @@ const EnmityYou: Plugin = {
          return res
       })
 
-      Patcher.after(Titles, "useSettingTitles", (_, __, res) => {
-         res = { ...res }
-         
+      Patcher.after(Titles, "useSettingTitles", (_, __, res) => {res = { ...res }
          Object.assign(res, { 
             ENMITY: "General",
             ENMITY_PLUGINS: "Plugins",
             ENMITY_THEMES: "Themes",
-            ENMITY_PAGE: "Subpage"
+            ENMITY_PAGE: "Page"
          })
 
          return res
