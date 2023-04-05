@@ -108,8 +108,8 @@ const EnmityYou: Plugin = {
       Patcher.after(SettingsOverviewScreen, "default", (_, [{ navigation }], { props: { children: res }}) => {
          const { children } = findInReactTree(res, r => r.children[1].type === FormSection);
          const index = children.findIndex(c => c.props.title === Locale.Messages.PREMIUM_SETTINGS_GENERIC);
-         const { ENMITY: GENERAL, ENMITY_PLUGINS: PLUGINS, ENMITY_THEMES: THEMES } = Screens.useSettingScreens();
-         const { ENMITY, ENMITY_PLUGINS, ENMITY_THEMES } = Titles.useSettingTitles();
+         const { ENMITY: EnmityScreen, ENMITY_PLUGINS: PluginsScreen, ENMITY_THEMES: ThemesScreen } = Screens.useSettingScreens();
+         const { ENMITY: EnmityTitle, ENMITY_PLUGINS: PluginsTitle, ENMITY_THEMES: ThemesTitle } = Titles.useSettingTitles();
 
          children.splice(index === -1 ? 1 : index, 0, (
             <FormSection 
@@ -119,7 +119,7 @@ const EnmityYou: Plugin = {
             >
                <View style={styles.form}>
                   <FormRow
-                     label={ENMITY}
+                     label={EnmityTitle}
                      leading={() => (
                         <Icon 
                            source={{ uri: 'https://files.enmity.app/icon-64.png' }}
@@ -127,11 +127,11 @@ const EnmityYou: Plugin = {
                         />
                      )}
                      trailing={<FormArrow />}
-                     onPress={() => void navigation.push(GENERAL.route)}
+                     onPress={() => void navigation.push(EnmityScreen.route)}
                   />
                   <FormDivider />
                   <FormRow
-                     label={ENMITY_PLUGINS}
+                     label={PluginsTitle}
                      leading={() => (
                         <Icon 
                            source={getIDByName("ic_activity_24px")} 
@@ -139,11 +139,11 @@ const EnmityYou: Plugin = {
                         />
                      )}
                      trailing={<FormArrow />}
-                     onPress={() => void navigation.push(PLUGINS.route, { placeholder: ENMITY_PLUGINS })}
+                     onPress={() => void navigation.push(PluginsScreen.route, { placeholder: PluginsTitle })}
                   />
                   <FormDivider />
                   <FormRow
-                     label={ENMITY_THEMES}
+                     label={ThemesTitle}
                      leading={() => (
                         <Icon 
                            source={getIDByName("img_nitro_star")} 
@@ -151,7 +151,7 @@ const EnmityYou: Plugin = {
                         />
                      )}
                      trailing={<FormArrow />}
-                     onPress={() => void navigation.push(THEMES.route, { placeholder: ENMITY_THEMES })}
+                     onPress={() => void navigation.push(ThemesScreen.route, { placeholder: ThemesTitle })}
                   />
                </View>
             </FormSection>
