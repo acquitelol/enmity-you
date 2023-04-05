@@ -1,5 +1,5 @@
 import { FormArrow, FormDivider, FormRow, FormSection, View } from 'enmity/components'; 
-import { React, StyleSheet, Constants } from 'enmity/metro/common'; 
+import { React, StyleSheet, ColorMap } from 'enmity/metro/common'; 
 import { findInReactTree } from 'enmity/utilities';
 import { getIDByName } from 'enmity/api/assets';
 import { bulk, filters } from 'enmity/metro';
@@ -31,7 +31,7 @@ const styles = StyleSheet.createThemedStyleSheet({
    form: {
       width: "100%",
       borderRadius: 16,
-      backgroundColor: Constants.ThemeColorMap.BACKGROUND_PRIMARY
+      backgroundColor: ColorMap.colors.BACKGROUND_PRIMARY
    },
    icon: {
       width: 16,
