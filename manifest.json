@@ -1,11 +1,12 @@
 {
-   "name": "SilentTyping",
+   "name": "EnmityYou",
    "version": "1.0.0",
-   "description": "Silences your typing indicator.",
+   "description": "Allows you to use Enmity inside of the new You Tab. Enable from DevTools Widget ➝ Design Toggles :3",
    "authors": [
       {
-         "name": "eternal",
-         "id": "263689920210534400"
+         "name": "Rosie<3",
+         "id": "581573474296791211"
       }
-   ]
+   ],
+   "color": "#ff91ff"
 }
