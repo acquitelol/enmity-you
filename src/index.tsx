@@ -1,11 +1,11 @@
-import { FormArrow, FormDivider, FormRow, FormSection, View } from 'enmity/components'; 
-import { React, StyleSheet, ColorMap, Users, Locale } from 'enmity/metro/common'; 
+import { FormArrow, FormDivider, FormRow, FormSection, View } from 'enmity/components';
+import { React, StyleSheet, ColorMap, Users, Locale } from 'enmity/metro/common';
 import { findInReactTree } from 'enmity/utilities';
 import { getIDByName } from 'enmity/api/assets';
 import { bulk, filters } from 'enmity/metro';
-import { Plugin, registerPlugin } from 'enmity/managers/plugins'; 
+import { Plugin, registerPlugin } from 'enmity/managers/plugins';
 import { create } from 'enmity/patcher'; 
-import manifest from '../manifest.json'; 
+import manifest from '../manifest.json';
 
 const Patcher = create(manifest.name);
 
@@ -49,21 +49,19 @@ const EnmityYou: Plugin = {
                React.useEffect(() => {
                   if (!params?.hasSetHeaderRight) {
                      params.hasSetHeaderRight = true;
-                     navigation.setOptions({ 
-                        headerRight: () => (
-                           <View style={{ left: 13 }}>
-                              <Component.headerRight /> 
-                           </View>
-                        )
-                     })
+                     navigation.setOptions({ headerRight: () => (
+                        <View style={{ left: 12 }}>
+                           <Component.headerRight />
+                        </View>
+                     )})
                   }
                }, [])
 
                return <Component.render />
             }
-         }
-         
-         Object.assign(res, { 
+         };
+
+         Object.assign(res, {
             ENMITY: {
                route: "Enmity",
                getComponent: () => Enmity.render
@@ -80,7 +78,7 @@ const EnmityYou: Plugin = {
                route: "EnmityCustomPage",
                getComponent: () => ({ navigation, route: { params } }) => {
                   const Component = params.pagePanel ?? View;
-                  
+
                   React.useEffect(() => {
                      if (params.pageName && !params?.hasSetTitle) {
                         params.hasSetTitle = true;
@@ -91,20 +89,20 @@ const EnmityYou: Plugin = {
                   return <Component />;
                },
             }
-         })
+         });
 
-         return res
-      })
+         return res;
+      });
 
-      Patcher.after(Titles, "useSettingTitles", (_, __, res) => {res = { ...res }
-         Object.assign(res, { 
+      Patcher.after(Titles, "useSettingTitles", (_, __, res) => {
+         Object.assign(res, {
             ENMITY: "General",
             ENMITY_PLUGINS: "Plugins",
             ENMITY_THEMES: "Themes",
             ENMITY_PAGE: "Page"
-         })
+         });
 
-         return res
+         return res;
       })
 
       Patcher.after(SettingsOverviewScreen, "default", (_, [{ navigation }], { props: { children: res }}) => {
@@ -158,7 +156,7 @@ const EnmityYou: Plugin = {
                </View>
             </FormSection>
          ));
-      })
+      });
    }, 
    
    onStop() { 
