@@ -1,10 +1,10 @@
-import { FormArrow, FormDivider, FormRow, FormSection, View } from 'enmity/components';
+import { FormSection, View } from 'enmity/components';
 import { React, StyleSheet, ColorMap, Users, Locale } from 'enmity/metro/common';
 import { findInReactTree } from 'enmity/utilities';
-import { getIDByName } from 'enmity/api/assets';
-import { bulk, filters } from 'enmity/metro';
+import { bulk, filters, getByName } from 'enmity/metro';
 import { Plugin, registerPlugin } from 'enmity/managers/plugins';
 import { create } from 'enmity/patcher'; 
+import { data } from './data';
 import manifest from '../manifest.json';
 
 const Patcher = create(manifest.name);
@@ -13,14 +13,20 @@ const [
    SettingsOverviewScreen,
    Screens,
    Titles,
-   Icon,
+   Icons,
    getScreens,
+   AncestorMetadata,
+   Relationships,
+   { renderSetting }
 ] = bulk(
    filters.byName("SettingsOverviewScreen", false),
    filters.byProps("useSettingScreen"),
    filters.byProps("useSettingTitle"),
-   filters.byName("Icon"),
-   filters.byName("getScreens")
+   filters.byProps("useSettingIcon"),
+   filters.byName("getScreens"),
+   filters.byProps("useSettingAncestorMetadata"),
+   filters.byProps("useSettingRelationships"),
+   filters.byProps("renderSetting")
 )
 
 const styles = StyleSheet.createThemedStyleSheet({
@@ -29,13 +35,8 @@ const styles = StyleSheet.createThemedStyleSheet({
       borderRadius: 16,
       backgroundColor: ColorMap.colors.BACKGROUND_PRIMARY
    },
-   icon: {
-      width: 16,
-      height: 16,
-      tintColor: "#fff",
-      margin: 8
-   }
 })
+
 
 const EnmityYou: Plugin = { 
    ...manifest, 
@@ -45,10 +46,11 @@ const EnmityYou: Plugin = {
          res = { ...res }
 
          const generateAddonComponent = (Component: typeof EnmityPlugins | typeof EnmityThemes) => {
-            return ({ navigation, route: { params } }) => {
+            return ({ navigation, route }) => {
                React.useEffect(() => {
-                  if (!params?.hasSetHeaderRight) {
-                     params.hasSetHeaderRight = true;
+                  if (!route?.hasSetHeaderRight) {
+                     route.hasSetHeaderRight = true;
+
                      navigation.setOptions({ headerRight: () => (
                         <View style={{ left: 12 }}>
                            <Component.headerRight />
@@ -62,25 +64,25 @@ const EnmityYou: Plugin = {
          };
 
          Object.assign(res, {
-            ENMITY: {
-               route: "Enmity",
+            [data.base.upper]: {
+               route: data.base.route,
                getComponent: () => Enmity.render
             },
-            ENMITY_PLUGINS: {
-               route: "EnmityPlugins",
+            [data.plugins.upper]: {
+               route: data.plugins.route,
                getComponent: () => generateAddonComponent(EnmityPlugins),
             },
-            ENMITY_THEMES: {
-               route: "EnmityThemes",
+            [data.themes.upper]: {
+               route: data.themes.route,
                getComponent: () => generateAddonComponent(EnmityThemes),
             },
-            ENMITY_PAGE: {
-               route: "EnmityCustomPage",
+            [data.page.upper]: {
+               route: data.page.route,
                getComponent: () => ({ navigation, route: { params } }) => {
                   const Component = params.pagePanel ?? View;
 
                   React.useEffect(() => {
-                     if (params.pageName && !params?.hasSetTitle) {
+                     if (params.pageName && !params.hasSetTitle) {
                         params.hasSetTitle = true;
                         navigation.setOptions({ title: params.pageName })
                      }
@@ -96,63 +98,76 @@ const EnmityYou: Plugin = {
 
       Patcher.after(Titles, "useSettingTitles", (_, __, res) => {
          Object.assign(res, {
-            ENMITY: "General",
-            ENMITY_PLUGINS: "Plugins",
-            ENMITY_THEMES: "Themes",
-            ENMITY_PAGE: "Page"
+            [data.base.upper]: data.base.title,
+            [data.plugins.upper]: data.plugins.title,
+            [data.themes.upper]: data.themes.title,
+            [data.page.upper]: data.page.title
          });
 
          return res;
       })
 
-      Patcher.after(SettingsOverviewScreen, "default", (_, [{ navigation }], { props: { children: res }}) => {
-         const { children } = findInReactTree(res, r => r.children[1].type === FormSection);
-         const index = children.findIndex(c => c.props.title === Locale.Messages.PREMIUM_SETTINGS_GENERIC);
-         const { ENMITY: EnmityScreen, ENMITY_PLUGINS: PluginsScreen, ENMITY_THEMES: ThemesScreen } = Screens.useSettingScreens();
-         const { ENMITY: EnmityTitle, ENMITY_PLUGINS: PluginsTitle, ENMITY_THEMES: ThemesTitle } = Titles.useSettingTitles();
+      Patcher.after(Relationships, "useSettingRelationships", (_, __, res) => {
+         res = { ...res }
 
-         children.splice(index === -1 ? 1 : index, 0, (
+         Object.assign(res, {
+            [data.base.upper]: data.base.upper,
+            [data.plugins.upper]: data.base.upper,
+            [data.themes.upper]: data.base.upper,
+            [data.page.upper]: data.base.upper
+         });
+
+         return res;
+      })
+
+      Patcher.after(Titles, "useSettingTitlePairs", (_, __, res) => {
+         res.push([ data.base.upper, data.base.title ]);
+         res.push([ data.plugins.upper, data.plugins.title ]);
+         res.push([ data.themes.upper, data.themes.title ]);
+      })
+
+      const insteadPatchHooks = (object, func, type) => {
+         Patcher.instead(object, func, (self, args, orig) => {
+            switch (args[0]) {
+               case data.base.upper: {
+                  return data.base[type];
+               }
+               case data.plugins.upper: {
+                  return data.plugins[type];
+               }
+               case data.themes.upper: {
+                  return data.themes[type];
+               }
+               default: {
+                  return orig.apply(self, args);
+               }
+            }
+         })
+      }
+
+      insteadPatchHooks(Icons, "useSettingIcon", "icon");
+      insteadPatchHooks(AncestorMetadata, "useSettingAncestorMetadata", "ancestor");
+      insteadPatchHooks(Screens, "useSettingScreen", "screen");
+      insteadPatchHooks(Titles, "useSettingTitle", "title");
+
+      Patcher.after(SettingsOverviewScreen, "default", (_, __, res) => {
+         const { children: [ ___, FormSections ] } = findInReactTree(res, r => r.children[0].type === getByName("SettingsSearch"));
+         const index = FormSections?.findIndex(c => c.props.title === Locale.Messages.PREMIUM_SETTINGS_GENERIC);
+
+         const Enmity = renderSetting({ type: "route", id: data.base.upper })
+         const Plugins = renderSetting({ type: "route", id: data.plugins.upper })
+         const Themes = renderSetting({ type: "route", id: data.themes.upper })
+
+         FormSections?.splice(index === -1 ? 1 : index, 0, (
             <FormSection 
-               key='Enmity' 
-               title='Enmity' 
+               key={data.base.route}
+               title={data.base.route}
                inset
             >
                <View style={styles.form}>
-                  <FormRow
-                     label={EnmityTitle}
-                     leading={() => (
-                        <Icon 
-                           source={{ uri: 'https://files.enmity.app/icon-64.png' }}
-                           style={styles.icon} 
-                        />
-                     )}
-                     trailing={<FormArrow />}
-                     onPress={() => void navigation.push(EnmityScreen.route)}
-                  />
-                  <FormDivider />
-                  <FormRow
-                     label={PluginsTitle}
-                     leading={() => (
-                        <Icon 
-                           source={getIDByName("ic_activity_24px")} 
-                           style={styles.icon}
-                        />
-                     )}
-                     trailing={<FormArrow />}
-                     onPress={() => void navigation.push(PluginsScreen.route, { placeholder: PluginsTitle })}
-                  />
-                  <FormDivider />
-                  <FormRow
-                     label={ThemesTitle}
-                     leading={() => (
-                        <Icon 
-                           source={getIDByName("img_nitro_star")} 
-                           style={styles.icon}
-                        />
-                     )}
-                     trailing={<FormArrow />}
-                     onPress={() => void navigation.push(ThemesScreen.route, { placeholder: ThemesTitle })}
-                  />
+                  {Enmity}
+                  {Plugins}
+                  {Themes}
                </View>
             </FormSection>
          ));
