@@ -9,20 +9,19 @@ export default (Patcher: Patcher) => {
     insteadPatchHook(Patcher, Titles, "useSettingTitle", "title");
 
     Patcher.after(Titles, "useSettingTitles", (_, __, res) => {
+        const titles = Object.keys(data)
+            .map(key => ({ [data[key].upper]: data[key].title }))
+            .reduce((acc, obj) => ({ ...acc, ...obj }), {});
+
         return {
             ...res,
-            [data.base.upper]: data.base.title,
-            [data.plugins.upper]: data.plugins.title,
-            [data.themes.upper]: data.themes.title,
-            [data.page.upper]: data.page.title
+            ...titles
         };
     });
 
     Patcher.after(Titles, "useSettingTitlePairs", (_, __, res) => {
         Object.keys(data)
             .filter(k => k.toLowerCase() !== "page")
-            .forEach(k => {
-                res.push([ data[k].upper, data[k].route ])
-            });
+            .forEach(k => res.push([ data[k].upper, data[k].route ]));
     });
 };

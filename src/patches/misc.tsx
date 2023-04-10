@@ -12,12 +12,13 @@ export default (Patcher: Patcher) => {
     insteadPatchHook(Patcher, AncestorMetadata, "useSettingAncestorMetadata", "ancestor");
 
     Patcher.after(Relationships, "useSettingRelationships", (_, __, res) => {
+        const relationships = Object.keys(data)
+            .map(key => ({ [data[key].upper]: data.general.upper }))
+            .reduce((acc, obj) => ({ ...acc, ...obj }), {});
+
         return {
             ...res,
-            [data.base.upper]: data.base.upper,
-            [data.plugins.upper]: data.base.upper,
-            [data.themes.upper]: data.base.upper,
-            [data.page.upper]: data.base.upper
+            ...relationships
         }
     });
 };

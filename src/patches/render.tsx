@@ -25,7 +25,7 @@ export default (Patcher: Patcher) => {
          .map(k => renderSetting({ type: "route", id: data[k].upper }));
 
       FormSections?.splice(index === -1 ? 1 : index, 0, (
-         <FormSection key={data.base.route} title={data.base.route} inset>
+         <FormSection key={data.general.route} title={data.general.route} inset>
             <View style={styles.round}>
                {Enmity}
                {Plugins}
