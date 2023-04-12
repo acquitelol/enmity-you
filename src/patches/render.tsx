@@ -1,4 +1,4 @@
-import { ColorMap, Locale, React, StyleSheet } from 'enmity/metro/common';
+import { Constants, Locale, React, StyleSheet } from 'enmity/metro/common';
 import { getByName, getByProps } from 'enmity/metro';
 import { findInReactTree } from 'enmity/utilities';
 import { FormSection, View } from 'enmity/components';
@@ -11,7 +11,7 @@ const styles = StyleSheet.createThemedStyleSheet({
    round: {
       width: "100%",
       borderRadius: 16,
-      backgroundColor: ColorMap.colors.BACKGROUND_PRIMARY
+      backgroundColor: Constants.ThemeColorMap.BACKGROUND_PRIMARY
    },
 });
 
