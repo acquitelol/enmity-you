@@ -1,7 +1,7 @@
 import { Constants, Locale, React, StyleSheet } from 'enmity/metro/common';
 import { getByName, getByProps } from 'enmity/metro';
 import { findInReactTree } from 'enmity/utilities';
-import { FormSection, View } from 'enmity/components';
+import { FormDivider, FormSection, View } from 'enmity/components';
 import { Patcher } from 'enmity/patcher';
 import { data } from '../data';
 
@@ -25,10 +25,12 @@ export default (Patcher: Patcher) => {
          .map(k => renderSetting({ type: "route", id: data[k].upper }));
 
       FormSections?.splice(index === -1 ? 1 : index, 0, (
-         <FormSection key={data.general.route} title={data.general.route} inset>
+         <FormSection key={data.general.route} title={data.general.route} inset uppercaseTitle={false}>
             <View style={styles.round}>
                {Enmity}
+               <FormDivider />
                {Plugins}
+               <FormDivider />
                {Themes}
             </View>
          </FormSection>
