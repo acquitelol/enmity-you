@@ -2,7 +2,8 @@ export interface Set<T> {
     general: T;
     plugins: T;
     themes: T;
-    page: T
+    page: T;
+    [key: string]: T
 }
 
 export type ExtractSetT<C extends Set<any>> = C extends Set<infer T> ? T : unknown;

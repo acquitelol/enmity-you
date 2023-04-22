@@ -2,9 +2,11 @@ import { React, Users } from 'enmity/metro/common';
 import { getByProps, getByName } from 'enmity/metro';
 import { View } from 'enmity/components';
 import { Patcher } from 'enmity/patcher';
-import { data } from '../data';
+import { base, data, states } from '../data/data';
 import insteadPatchHook from '../insteadPatchHook';
 import { Screens } from '../def';
+
+import { getPlugins } from 'enmity/managers/plugins';
 
 const Screens = getByProps("useSettingScreen", "useSettingScreens");
 const getScreens = getByName("getScreens");
@@ -15,7 +17,7 @@ export default (Patcher: Patcher) => {
     Patcher.after(Screens, "useSettingScreens", (_, __, res) => {
         const { Enmity, EnmityPlugins, EnmityThemes } = getScreens(Users.getCurrentUser());
 
-        const [ Plugins, Themes ] = [ EnmityPlugins, EnmityThemes ]
+        const [Plugins, Themes] = [EnmityPlugins, EnmityThemes]
             .map(Screen => ({ navigation, route }) => {
                 React.useEffect(() => {
                     if (!route?.hasSetHeaderRight) {
@@ -60,7 +62,25 @@ export default (Patcher: Patcher) => {
     
                     return <Component />;
                 }
-            }
+            },
+            ...Object.keys(data)
+                .filter((k) => !base.includes(k))
+                .map(k => ({
+                    route: data[k]?.route,
+                    getComponent: () => {
+                        const [_, type, addon, state] = data[k]?.ancestor.breadcrumbs as [_: any, type: "Plugins" | "Themes", addon: string, state: typeof states[number]];
+                        if (state !== "Enabled") {
+                            return type === "Plugins"
+                                ? Plugins
+                                : Themes
+                        }
+
+                        const settingsPanel = getPlugins().find(plugin => plugin.name === addon)?.getSettingsPanel;
+                        return type === "Plugins"
+                            ? settingsPanel ?? Plugins
+                            : Themes;
+                    }
+                }))
         };
     });
 };

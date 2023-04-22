@@ -12,8 +12,8 @@ const EnmityYou: Plugin = {
    ...manifest, 
    
    onStart() {
-      patchScreens(Patcher);
       patchTitles(Patcher);
+      patchScreens(Patcher);
       patchMisc(Patcher);
       patchRender(Patcher);
    }, 

@@ -1,38 +1,48 @@
 import { Constants, Locale, React, StyleSheet } from 'enmity/metro/common';
 import { getByName, getByProps } from 'enmity/metro';
 import { findInReactTree } from 'enmity/utilities';
-import { FormDivider, FormSection, View } from 'enmity/components';
+import { FormDivider, FormSection } from 'enmity/components';
 import { Patcher } from 'enmity/patcher';
-import { data } from '../data';
+import { data } from '../data/data';
 
 const SettingsOverviewScreen = getByName("SettingsOverviewScreen", { default: false });
 const { renderSetting } = getByProps("renderSetting");
 const styles = StyleSheet.createThemedStyleSheet({
-   round: {
-      width: "100%",
+   section: {
+      backgroundColor: Constants.ThemeColorMap.BACKGROUND_PRIMARY,
       borderRadius: 16,
-      backgroundColor: Constants.ThemeColorMap.BACKGROUND_PRIMARY
+      overflow: "hidden"
    },
+   title: {
+      paddingTop: 24
+   }
 });
 
 export default (Patcher: Patcher) => {
    Patcher.after(SettingsOverviewScreen, "default", (_, __, res) => {
-      const { children: [ ___, FormSections ] } = findInReactTree(res, r => r.children[0].type === getByName("SettingsSearch"));
-      const index = FormSections?.findIndex(c => c.props.title === Locale.Messages.PREMIUM_SETTINGS_GENERIC);
+      const { children: [ _SettingsSearch, SettingsRows ] } = findInReactTree(res, r => r.children[0].type === getByName("SettingsSearch"));
+      const index = SettingsRows?.findIndex((child: Record<string, any>) => child.props.title === Locale.Messages.PREMIUM_SETTINGS_GENERIC);
 
       const [ Enmity, Plugins, Themes ] = Object.keys(data)
          .filter(k => k.toLowerCase() !== "page")
-         .map(k => renderSetting({ type: "route", id: data[k].upper }));
+         .map(k => renderSetting({ type: "route", id: data[k].upper }))
 
-      FormSections?.splice(index === -1 ? 1 : index, 0, (
-         <FormSection key={data.general.route} title={data.general.route} inset uppercaseTitle={false}>
-            <View style={styles.round}>
-               {Enmity}
-               <FormDivider />
-               {Plugins}
-               <FormDivider />
-               {Themes}
-            </View>
+      SettingsRows?.splice(Math.abs(index), 0, (
+         <FormSection
+            key={data.general.route}
+            accessibilityLabel={data.general.route}
+            title={data.general.route}
+            sectionBodyStyle={styles.section}
+            titleStyleType={"no_border"}
+            titleViewStyle={styles.title}
+            uppercaseTitle={false}
+            inset
+         >
+            {Enmity}
+            <FormDivider />
+            {Plugins}
+            <FormDivider />
+            {Themes}
          </FormSection>
       ));
    });

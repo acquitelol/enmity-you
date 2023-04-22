@@ -1,6 +1,6 @@
 import { getByProps } from 'enmity/metro';
 import { Patcher } from 'enmity/patcher';
-import { data } from '../data';
+import { data } from '../data/data';
 import insteadPatchHook from '../insteadPatchHook';
 
 const Titles = getByProps("useSettingTitle", "useSettingTitles");
@@ -20,6 +20,8 @@ export default (Patcher: Patcher) => {
     });
 
     Patcher.after(Titles, "useSettingTitlePairs", (_, __, res) => {
+        console.log({ res, data });
+
         Object.keys(data)
             .filter(k => k.toLowerCase() !== "page")
             .forEach(k => res.push([ data[k].upper, data[k].route ]));

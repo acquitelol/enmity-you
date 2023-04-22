@@ -1,6 +1,6 @@
 import { Patcher } from 'enmity/patcher';
 import { findInTree } from 'enmity/utilities';
-import { data } from './data';
+import { data } from './data/data';
 
 export default (Patcher: Patcher, object: any, func: string, type: string) => {
     Patcher.instead(object, func, (self, args, orig) => {
@@ -9,6 +9,7 @@ export default (Patcher: Patcher, object: any, func: string, type: string) => {
             { walkable: Object.keys(data) }
         );
 
+        console.log({ data, predicate, type });
         if (!predicate) return orig.apply(self, args);
         return predicate[type];
     });
