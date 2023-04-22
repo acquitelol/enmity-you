@@ -20,7 +20,7 @@ const EnmityYou: Plugin = {
    
    onStop() { 
       Patcher.unpatchAll(); 
-   }, 
+   }
 }; 
 
 registerPlugin(EnmityYou);
