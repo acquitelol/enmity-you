@@ -4,10 +4,11 @@ import { findInReactTree } from 'enmity/utilities';
 import { FormDivider, FormSection } from 'enmity/components';
 import { Patcher } from 'enmity/patcher';
 import { data } from '../common/data';
-import { RenderSetting } from '../defs';
 
-const SettingsOverviewScreen = getByName("SettingsOverviewScreen", { default: false });
-const { renderSetting }: { renderSetting: RenderSetting } = getByProps("renderSetting");
+import { SettingsOverviewScreen, SettingsRenderables } from '@you/modules';
+
+const SettingsOverviewScreen: SettingsOverviewScreen = getByName("SettingsOverviewScreen", { default: false });
+const { renderSetting }: SettingsRenderables = getByProps("renderSetting");
 const styles = StyleSheet.createThemedStyleSheet({
    section: {
       backgroundColor: Constants.ThemeColorMap.BACKGROUND_PRIMARY,

@@ -2,7 +2,8 @@ import { getByProps } from 'enmity/metro';
 import { Patcher } from 'enmity/patcher';
 import { data } from '../common/data';
 import insteadPatchHook from '../common/hook';
-import { TitlesHook } from '../defs';
+
+import { TitlesHook } from '@you/hooks';
 
 const Titles: TitlesHook = getByProps("useSettingTitle", "useSettingTitles");
 

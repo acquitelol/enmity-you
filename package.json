@@ -1,12 +1,12 @@
 {
-   "name": "plugin-template",
-   "description": "Template for enmity plugins.",
-   "version": "1.0.0",
+   "name": "enmity-you",
+   "description": "Allows you to use Enmity inside of the new You Tab. Enable from DevTools Widget ➝ Design Toggles :3",
    "license": "GPL-3.0",
-   "author": "Zoey & eternal",
+   "author": "Rosie",
    "scripts": {
       "build": "rollup -c --configPlugin esbuild"
    },
+   "types": "defs.d.ts",
    "devDependencies": {
       "@rollup/plugin-commonjs": "^21.0.1",
       "@rollup/plugin-json": "^4.1.0",

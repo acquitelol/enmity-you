@@ -4,7 +4,10 @@ import { View } from 'enmity/components';
 import { Patcher } from 'enmity/patcher';
 import { data } from '../common/data';
 import insteadPatchHook from '../common/hook';
-import { GetScreens, Scenes, ScreensHook } from '../defs';
+
+import { Scenes } from '@you/data';
+import { GetScreens } from '@you/functions';
+import { ScreensHook } from '@you/hooks';
 
 const Screens: ScreensHook = getByProps("useSettingScreen", "useSettingScreens");
 const getScreens: GetScreens = getByName("getScreens");

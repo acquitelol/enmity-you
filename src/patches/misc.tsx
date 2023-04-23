@@ -1,7 +1,8 @@
 import { getByProps } from 'enmity/metro';
 import { Patcher } from 'enmity/patcher';
 import hook from '../common/hook';
-import { IconsHook, AncestorMetadataHook } from '../defs';
+
+import { IconsHook, AncestorMetadataHook } from '@you/hooks';
 
 const Icons: IconsHook = getByProps("useSettingIcon");
 const AncestorMetadata: AncestorMetadataHook = getByProps("useSettingAncestorMetadata");
