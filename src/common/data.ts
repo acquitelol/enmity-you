@@ -1,5 +1,5 @@
 import { getIDByName } from "enmity/api/assets";
-import { Ancestors, Breadcrumbs, Data, Icons, Routes, Screens, Titles, Uppers } from "../def";
+import { Ancestors, Breadcrumbs, Data, Icons, Routes, Screens, Titles, Uppers } from "../defs";
 
 export const uppers: Uppers = {
     general: "ENMITY",

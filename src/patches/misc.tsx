@@ -1,11 +1,12 @@
 import { getByProps } from 'enmity/metro';
 import { Patcher } from 'enmity/patcher';
-import insteadPatchHook from '../insteadPatchHook';
+import hook from '../common/hook';
+import { IconsHook, AncestorMetadataHook } from '../defs';
 
-const Icons = getByProps("useSettingIcon");
-const AncestorMetadata = getByProps("useSettingAncestorMetadata");
+const Icons: IconsHook = getByProps("useSettingIcon");
+const AncestorMetadata: AncestorMetadataHook = getByProps("useSettingAncestorMetadata");
 
 export default (Patcher: Patcher) => {
-    insteadPatchHook(Patcher, Icons, "useSettingIcon", "icon");
-    insteadPatchHook(Patcher, AncestorMetadata, "useSettingAncestorMetadata", "ancestor");
+    hook(Patcher, Icons, "useSettingIcon", "icon");
+    hook(Patcher, AncestorMetadata, "useSettingAncestorMetadata", "ancestor");
 };

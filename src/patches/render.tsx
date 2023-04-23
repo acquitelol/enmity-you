@@ -3,10 +3,11 @@ import { getByName, getByProps } from 'enmity/metro';
 import { findInReactTree } from 'enmity/utilities';
 import { FormDivider, FormSection } from 'enmity/components';
 import { Patcher } from 'enmity/patcher';
-import { data } from '../data/data';
+import { data } from '../common/data';
+import { RenderSetting } from '../defs';
 
 const SettingsOverviewScreen = getByName("SettingsOverviewScreen", { default: false });
-const { renderSetting } = getByProps("renderSetting");
+const { renderSetting }: { renderSetting: RenderSetting } = getByProps("renderSetting");
 const styles = StyleSheet.createThemedStyleSheet({
    section: {
       backgroundColor: Constants.ThemeColorMap.BACKGROUND_PRIMARY,
