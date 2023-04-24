@@ -10,16 +10,16 @@ declare module "@you" {
 }
 
 declare module "@you/hooks" {
-    import { AssignProperties } from "@you/utilities";
+    import { AssignProperty } from "@you/utilities";
     import { Icon, Ancestor, Route, Title } from "@you/data";
 
-    export type IconsHook = AssignProperties<"useSettingIcon", (setting: string) => Icon>;
-    export type AncestorMetadataHook = AssignProperties<"useSettingAncestorMetadata", (setting: string) => Ancestor>;
-    export type ScreensHook = AssignProperties<"useSettingScreen", (setting: string) => Screen> 
-        & AssignProperties<"useSettingScreens", () => ({ [key: string]: Screen })>;
-    export type TitlesHook = AssignProperties<"useSettingTitle", (setting: string) => Title>
-        & AssignProperties<"useSettingTitles", () => { [key: Route]: Title }>
-        & AssignProperties<"useSettingTitlePairs", Array<[Title, Route]>>;
+    export type IconsHook = AssignProperty<"useSettingIcon", (setting: string) => Icon>;
+    export type AncestorMetadataHook = AssignProperty<"useSettingAncestorMetadata", (setting: string) => Ancestor>;
+    export type ScreensHook = AssignProperty<"useSettingScreen", (setting: string) => Screen> 
+        & AssignProperty<"useSettingScreens", () => ({ [key: string]: Screen })>;
+    export type TitlesHook = AssignProperty<"useSettingTitle", (setting: string) => Title>
+        & AssignProperty<"useSettingTitles", () => { [key: Route]: Title }>
+        & AssignProperty<"useSettingTitlePairs", Array<[Title, Route]>>;
 
     export * as default from "@you/hooks";
 }
@@ -109,7 +109,7 @@ declare module "@you/settings" {
 declare module "@you/utilities" {
     import { Set } from "@you/settings";
 
-    export type AssignProperties<T extends string | symbol, U> = Record<T, U>;
+    export type AssignProperty<T extends string | symbol, U> = Record<T, U>;
     export type ExtractSetT<U extends Set<any>> = U extends Set<infer T> ? T : unknown;
 
     export * as default from "@you/utilities";
