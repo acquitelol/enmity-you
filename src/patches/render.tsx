@@ -38,8 +38,7 @@ export default (Patcher: Patcher) => {
             titleStyleType={"no_border"}
             titleViewStyle={styles.title}
             uppercaseTitle={false}
-            inset
-         >
+            inset>
             {Enmity}
             <FormDivider />
             {Plugins}
