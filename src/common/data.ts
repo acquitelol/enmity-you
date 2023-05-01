@@ -40,9 +40,9 @@ export const icons: Icons = {
 };
 
 export const breadcrumbs: Breadcrumbs = {
-    general: ["Modifications"],
-    plugins: ["Modifications", "Enmity"],
-    themes: ["Modifications", "Enmity"],
+    general: ["Modifications", routes.general],
+    plugins: ["Modifications", routes.general],
+    themes: ["Modifications", routes.general],
     page: []
 };
 
