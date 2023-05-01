@@ -22,6 +22,10 @@ declare module "@you/props" {
         getSettingTitles: () => { [key: Route]: Title };
         transformSettingTitle: (title: Title) => Title;
     }
+    export type YouTab = {
+        isYouTabEnabled: () => boolean;
+        useIsYouTabEnabled: () => boolean;
+    }
 
     export * as default from "@you/props";
 }

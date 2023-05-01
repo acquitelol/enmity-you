@@ -26,7 +26,7 @@ export const routes: Routes = {
 };
 
 export const titles: Titles = {
-    general: "Enmity",
+    general: "General",
     plugins: "Plugins",
     themes: "Themes",
     page: "Page"

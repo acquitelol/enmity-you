@@ -4,11 +4,7 @@ import { getByProps } from 'enmity/metro';
 import { Users } from 'enmity/metro/common';
 
 import manifest from '../manifest.json';
-
-import patchScreens from "./patches/screens";
-import patchTitles from "./patches/titles";
-import patchMisc from "./patches/misc";
-import patchRender from "./patches/render"
+import { patchScreens, patchTitles, patchMisc, patchRender } from './patches';
 
 const Patcher = create(manifest.name);
 const FluxDispatcher = getByProps("_currentDispatchActionType");
