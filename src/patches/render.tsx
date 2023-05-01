@@ -12,7 +12,7 @@ export default (Patcher: Patcher) => {
       const { props: { sections } } = findInReactTree(res, r => r?.type?.name === "SettingScreenLayout") ?? { props: { sections: [] } };
       const index = sections.findIndex((item: Record<string, any>) => item?.settings.find((setting: string) => setting === "ACCOUNT"))
 
-      !sections.find((section: Record<string, string>) => section.title === data.general.title) && 
+      !sections.find((section: Record<string, string>) => section.title === data.general.route) && 
          sections?.splice(index === -1 ? 1 : index + 1, 0, {
             title: data.general.route,
             settings: [data.general.upper, data.plugins.upper, data.themes.upper]
