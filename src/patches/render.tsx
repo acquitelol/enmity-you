@@ -13,7 +13,7 @@ export default (Patcher: Patcher) => {
       const index = sections.findIndex((item: Record<string, any>) => item?.settings.find((setting: string) => setting === "ACCOUNT"))
 
       !sections.find((section: Record<string, string>) => section.title === data.general.title) && 
-         sections?.splice(Math.abs(index) + 1, 0, {
+         sections?.splice(index === -1 ? 1 : index + 1, 0, {
             title: data.general.title,
             settings: [data.general.upper, data.plugins.upper, data.themes.upper]
          });
