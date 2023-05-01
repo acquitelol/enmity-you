@@ -1,5 +1,5 @@
 declare module "@you" {
-    export * as hooks from "@you/hooks";
+    export * as hooks from "@you/props";
     export * as functions from "@you/functions";
     export * as modules from "@you/modules";
     export * as data from "@you/data";
@@ -9,50 +9,37 @@ declare module "@you" {
     export * as default from "@you";
 }
 
-declare module "@you/hooks" {
+declare module "@you/props" {
     import { AssignProperty } from "@you/utilities";
-    import { Icon, Ancestor, Route, Title } from "@you/data";
+    import { Ancestor, Route, Title, Upper } from "@you/data";
+    import { Configuration } from "@you/config";
 
-    export type IconsHook = AssignProperty<"useSettingIcon", (setting: string) => Icon>;
     export type AncestorMetadataHook = AssignProperty<"useSettingAncestorMetadata", (setting: string) => Ancestor>;
-    export type ScreensHook = AssignProperty<"useSettingScreen", (setting: string) => Screen> 
-        & AssignProperty<"useSettingScreens", () => ({ [key: string]: Screen })>;
-    export type TitlesHook = AssignProperty<"useSettingTitle", (setting: string) => Title>
-        & AssignProperty<"useSettingTitles", () => { [key: Route]: Title }>
-        & AssignProperty<"useSettingTitlePairs", Array<[Title, Route]>>;
+    export type Configurations = {
+        SETTING_RELATIONSHIPS: { [key: Upper]: Upper | null };
+        SETTING_RENDERER_CONFIGS: { [key: Upper]: Configuration };
+        getSettingTitle: (setting: string) => Title;
+        getSettingTitles: () => { [key: Route]: Title };
+        transformSettingTitle: (title: Title) => Title;
+    }
 
-    export * as default from "@you/hooks";
+    export * as default from "@you/props";
 }
 
 declare module "@you/functions" {
-    import { Scenes } from "@you/data";
-
-    export type SettingTypes = "route" | "toggle" | "pressable" | "static" | "custom";
-    export type RenderSetting = (
-        {}: { type: Omit<SettingTypes, "custom">; id: string; } 
-        | { type: "custom", id: string, getComponent: () => any }
-    ) => any;
+    import { Scenes } from "@you/config";
     export type GetScreens = (UserID: string) => Scenes;
-   
-
     export * as default from "@you/functions";
 }
 
 declare module "@you/modules" {
-    import { RenderSetting } from "@you/functions";
-
     export type SettingsOverviewScreen = { default: (self: typeof globalThis, args: any[]) => any };
-    export type SettingsRenderables = {
-        SettingIcon: () => any;
-        SettingTrailingArrow: () => any;
-        SettingTrailingValue: () => any;
-        renderSetting: RenderSetting;
-    }
-
     export * as default from "@you/modules";
 }
 
-declare module "@you/data" {
+declare module "@you/config" {
+    import { Icon } from "@you/data";
+
     export type Scenes = { 
         [key: string]: {
             key?: string | number;
@@ -66,18 +53,29 @@ declare module "@you/data" {
         route: string, 
         getComponent: () => any
     };
+    export type Configuration = {
+        type: "route",
+        icon: Icon,
+        screen: Screen
+    }
+
+    export * as default from "@you/config";
+}
+
+declare module "@you/data" {
+    export type Upper = string;
     export type Route = string;
     export type Title = string | null;
     export type Icon = { uri: string } | number | null;
-    export type oBreadcrumbs = Array<string | undefined>;
-    export type Ancestor =  ({ breadcrumbs: oBreadcrumbs, route: Route }) | null;
+    export type Breadcrumbs = Array<string | undefined>;
+    export type Ancestor =  ({ breadcrumbs: Breadcrumbs, route: Route }) | null;
     
     export * as default from "@you/data";
 }
 
 declare module "@you/settings" {
     import { ExtractSetT } from "@you/utilities";
-    import { Screen, Title, Icon, oBreadcrumbs, Ancestor } from "@you/data";
+    import { Route, Title, Icon, Breadcrumbs as Breadcrumb, Ancestor, Upper } from "@you/data";
 
     export type Set<T> = {
         general: T;
@@ -86,21 +84,21 @@ declare module "@you/settings" {
         page: T;
     };
 
-    export type Uppers = Set<string>;
-    export type Routes = Set<Screen["route"]>;
+    export type Uppers = Set<Upper>;
+    export type Routes = Set<Route>;
     export type Titles = Set<Title>;
     export type Icons = Set<Icon>;
-    export type Breadcrumbs = Set<oBreadcrumbs>;
+    export type Breadcrumbs = Set<Breadcrumb>;
+    export type Relationships = Set<string | null>
     export type Ancestors = Set<Ancestor>;
-    export type Screens = Set<Screen>;
 
     export type Data = Set<{
         upper: ExtractSetT<Uppers>;
         route: ExtractSetT<Routes>;
         title: ExtractSetT<Titles>;
         icon: ExtractSetT<Icons>;
+        relationship: ExtractSetT<Relationships>,
         ancestor: ExtractSetT<Ancestors>;
-        screen: ExtractSetT<Screens>;
     }>;
 
     export * as default from "@you/settings";

@@ -1,59 +1,54 @@
 import { React, Users } from 'enmity/metro/common';
 import { getByProps, getByName } from 'enmity/metro';
 import { View } from 'enmity/components';
-import { Patcher } from 'enmity/patcher';
 import { data } from '../common/data';
-import insteadPatchHook from '../common/hook';
 
-import { Scenes } from '@you/data';
+import { Configurations } from '@you/props';
+import { Scenes } from '@you/config';
 import { GetScreens } from '@you/functions';
-import { ScreensHook } from '@you/hooks';
 
-const Screens: ScreensHook = getByProps("useSettingScreen", "useSettingScreens");
 const getScreens: GetScreens = getByName("getScreens");
+const Configurations: Configurations = getByProps("SETTING_RENDERER_CONFIGS");
 
-export default (Patcher: Patcher) => {
-    insteadPatchHook(Patcher, Screens, "useSettingScreen", "screen");
+export default () => {
+    const { Enmity, EnmityPlugins, EnmityThemes }: Scenes = getScreens(Users.getCurrentUser());
+    const [ Plugins, Themes ] = [ EnmityPlugins, EnmityThemes ]
+        .map(Screen => ({ navigation, route }) => {
+            React.useEffect(() => {
+                if (!route?.hasSetHeaderRight) {
+                    route.hasSetHeaderRight = true;
 
-    Patcher.after(Screens, "useSettingScreens", (_, __, res) => {
-        const { Enmity, EnmityPlugins, EnmityThemes }: Scenes = getScreens(Users.getCurrentUser());
+                    navigation.setOptions({ 
+                        headerRight: () => Screen.headerRight 
+                            ? (
+                                <View style={{ left: 12 }}>
+                                    <Screen.headerRight />
+                                </View>
+                            )
+                            : null
+                    })
+                }
+            }, []);
 
-        const [ Plugins, Themes ] = [ EnmityPlugins, EnmityThemes ]
-            .map(Screen => ({ navigation, route }) => {
-                React.useEffect(() => {
-                    if (!route?.hasSetHeaderRight) {
-                        route.hasSetHeaderRight = true;
+            return <Screen.render />;
+        });
 
-                        navigation.setOptions({ 
-                            headerRight: () => Screen.headerRight 
-                                ? (
-                                    <View style={{ left: 12 }}>
-                                        <Screen.headerRight />
-                                    </View>
-                                )
-                                : null
-                        })
-                    }
-                }, []);
-
-                return <Screen.render />;
-            });
-
-        return {
-            ...res,
-            [data.general.upper]: {
+    Object.assign(
+        Configurations.SETTING_RENDERER_CONFIGS,
+        Object.entries({
+            general: {
                 route: data.general.route,
                 getComponent: () => Enmity.render
             },
-            [data.plugins.upper]: {
+            plugins: {
                 route: data.plugins.route,
                 getComponent: () => Plugins
             },
-            [data.themes.upper]: {
+            themes: {
                 route: data.themes.route,
                 getComponent: () => Themes
             },
-            [data.page.upper]: {
+            page: {
                 route: data.page.route,
                 getComponent: () => ({ navigation, route: { params } }) => {
                     const Component = params.pagePanel ?? View;
@@ -68,6 +63,14 @@ export default (Patcher: Patcher) => {
                     return <Component />;
                 }
             }
-        } as { [key: typeof data.general.upper]: Screen };
-    });
+        })
+        .map(([key, screen]) => ({
+            [data[key].upper]: {
+                type: "route",
+                icon: data[key].icon,
+                screen
+            }
+        }))
+        .reduce((acc, obj) => ({ ...acc, ...obj }), {})
+    );
 };

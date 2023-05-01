@@ -1,9 +1,9 @@
 import { getIDByName } from "enmity/api/assets";
 
 import { 
+    Relationships,
     Breadcrumbs,
     Ancestors, 
-    Screens,
     Uppers, 
     Titles,
     Routes,
@@ -26,7 +26,7 @@ export const routes: Routes = {
 };
 
 export const titles: Titles = {
-    general: "General",
+    general: "Enmity",
     plugins: "Plugins",
     themes: "Themes",
     page: "Page"
@@ -40,10 +40,17 @@ export const icons: Icons = {
 };
 
 export const breadcrumbs: Breadcrumbs = {
-    general: ["Enmity"],
-    plugins: ["Enmity"],
-    themes: ["Enmity"],
+    general: ["Modifications"],
+    plugins: ["Modifications", "Enmity"],
+    themes: ["Modifications", "Enmity"],
     page: []
+};
+
+export const relationships: Relationships = {
+    general: null,
+    plugins: uppers.general,
+    themes: uppers.general,
+    page: null
 };
 
 export const ancestors: Ancestors = Object.entries(routes)
@@ -55,15 +62,6 @@ export const ancestors: Ancestors = Object.entries(routes)
     }))
     .reduce((acc, obj) => ({ ...acc, ...obj }), {}) as unknown as Ancestors;
 
-export const screens: Screens = Object.entries(routes)
-    .map(([key, value]) => ({
-        [key]: {
-            route: value,
-            getComponent: () => {}
-        }
-    }))
-    .reduce((acc, obj) => ({ ...acc, ...obj }), {}) as unknown as Screens;
-
 export const data: Data = Object.entries(routes)
     .map(([key, value]) => ({
         [key]: {
@@ -71,8 +69,8 @@ export const data: Data = Object.entries(routes)
             route: value,
             title: titles[key],
             icon: icons[key],
-            ancestor: ancestors[key],
-            screen: screens[key]
+            relationship: relationships[key],
+            ancestor: ancestors[key]
         }
     }))
     .reduce((acc, obj) => ({ ...acc, ...obj }), {}) as unknown as Data;
