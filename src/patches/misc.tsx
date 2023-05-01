@@ -11,7 +11,7 @@ const YouTabHandler: YouTab = getByProps("isYouTabEnabled");
 
 export default (Patcher: Patcher) => {
     hook(Patcher, AncestorMetadata, "useSettingAncestorMetadata", "ancestor");
-    YouTabHandler && ["isYouTabEnabled", "useIsYouTabEnabled"].map(prop => Patcher.instead(YouTabHandler, prop, () => true));
+    YouTabHandler && Patcher.instead(YouTabHandler, "isYouTabEnabled", () => true);
 
     Object.assign(
         Configurations.SETTING_RELATIONSHIPS, 
