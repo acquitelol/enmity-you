@@ -14,7 +14,7 @@ export default (Patcher: Patcher) => {
 
       !sections.find((section: Record<string, string>) => section.title === data.general.title) && 
          sections?.splice(index === -1 ? 1 : index + 1, 0, {
-            title: data.general.title,
+            title: data.general.route,
             settings: [data.general.upper, data.plugins.upper, data.themes.upper]
          });
    });
