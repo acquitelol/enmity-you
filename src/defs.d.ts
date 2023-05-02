@@ -14,7 +14,7 @@ declare module "@you" {
 
 declare module "@you/props" {
     import { AssignProperty, Callback } from "@you/utilities";
-    import { Ancestor, Route, Title, Upper } from "@you/data";
+    import { Ancestor, Title, Upper } from "@you/data";
     import { Configuration } from "@you/config";
     import { IsYouTabEnabled, UseIsYouTabEnabled } from "@you/functions";
 
@@ -23,10 +23,10 @@ declare module "@you/props" {
         & AssignProperty<"useIsYouTabEnabled", UseIsYouTabEnabled>;
 
     export type Configurations = {
-        SETTING_RELATIONSHIPS: { [key: Upper]: Upper | null };
-        SETTING_RENDERER_CONFIGS: { [key: Upper]: Configuration };
+        SETTING_RELATIONSHIPS: Record<Upper, Upper| null>;
+        SETTING_RENDERER_CONFIGS: Record<Upper, Configuration>;
         getSettingTitle: (setting: string) => Title;
-        getSettingTitles: Callback<Record<Route, Title>>;
+        getSettingTitles: Callback<Record<Upper, Title>>;
         transformSettingTitle: (title: Title) => Title;
     };
 
