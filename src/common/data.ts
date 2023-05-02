@@ -43,7 +43,7 @@ export const breadcrumbs: Breadcrumbs = {
     general: ["Modifications", routes.general],
     plugins: ["Modifications", routes.general],
     themes: ["Modifications", routes.general],
-    page: []
+    page: ["Modifications", routes.general]
 };
 
 export const relationships: Relationships = {
@@ -62,11 +62,11 @@ export const ancestors: Ancestors = Object.entries(routes)
     }))
     .reduce((acc, obj) => ({ ...acc, ...obj }), {}) as unknown as Ancestors;
 
-export const data: Data = Object.entries(routes)
-    .map(([key, value]) => ({
+export const data: Data = Object.keys(routes)
+    .map(key => ({
         [key]: {
             upper: uppers[key],
-            route: value,
+            route: routes[key],
             title: titles[key],
             icon: icons[key],
             relationship: relationships[key],
