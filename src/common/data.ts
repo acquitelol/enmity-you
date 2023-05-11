@@ -39,10 +39,10 @@ export const icons: Icons = {
 };
 
 export const breadcrumbs: Breadcrumbs = {
-    general: ["Modifications", routes.general],
-    plugins: ["Modifications", routes.general],
-    themes: ["Modifications", routes.general],
-    page: ["Modifications", routes.general]
+    general: [routes.general],
+    plugins: [routes.general],
+    themes: [routes.general],
+    page: []
 };
 
 export const relationships: Relationships = {
@@ -59,7 +59,8 @@ export const data: Data = Object.keys(routes)
             route: routes[key],
             title: titles[key],
             icon: icons[key],
-            relationship: relationships[key]
+            relationship: relationships[key],
+            breadcrumbs: breadcrumbs[key]
         }
     }))
     .reduce((acc, obj) => ({ ...acc, ...obj }), {}) as unknown as Data;

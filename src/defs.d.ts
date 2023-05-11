@@ -100,6 +100,7 @@ declare module "@you/settings" {
         title: ExtractSetT<Titles>;
         icon: ExtractSetT<Icons>;
         relationship: ExtractSetT<Relationships>,
+        breadcrumbs: ExtractSetT<Breadcrumbs>
     }>;
 
     export * as default from "@you/settings";

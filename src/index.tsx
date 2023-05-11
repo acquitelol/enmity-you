@@ -4,7 +4,7 @@ import { getByProps } from 'enmity/metro';
 import { Users } from 'enmity/metro/common';
 
 import manifest from '../manifest.json';
-import { patchScreens, patchTitles, patchMisc, patchRender } from './patches';
+import { patchScreens, patchTitles, patchMisc, patchRender, patchSearch } from './patches';
 
 const Patcher = create(manifest.name);
 const FluxDispatcher = getByProps("_currentDispatchActionType");
@@ -25,10 +25,12 @@ const EnmityYou: Plugin = {
       // Patch Screens which requires a valid current user
       if (Users.getCurrentUser()) {
          patchScreens();
+         patchSearch(Patcher);
       } else {
          function event() {
             FluxDispatcher.unsubscribe("CONNECTION_OPEN", event);
             patchScreens();
+            patchSearch(Patcher);
          };
 
          FluxDispatcher.subscribe("CONNECTION_OPEN", event);
