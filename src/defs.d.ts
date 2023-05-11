@@ -3,7 +3,6 @@
 declare module "@you" {
     export * as props from "@you/props";
     export * as functions from "@you/functions";
-    export * as modules from "@you/modules";
     export * as config from "@you/config";
     export * as data from "@you/data";
     export * as settings from "@you/settings";
@@ -13,21 +12,16 @@ declare module "@you" {
 }
 
 declare module "@you/props" {
-    import { AssignProperty, Callback } from "@you/utilities";
-    import { Ancestor, Title, Upper } from "@you/data";
+    import { Callback, AssignProperty } from "@you/utilities";
+    import { Title, Upper } from "@you/data";
     import { Configuration } from "@you/config";
-    import { IsYouTabEnabled, UseIsYouTabEnabled } from "@you/functions";
+    import { useSettingsOverviewScreenLayout } from "@you/functions";
 
-    export type AncestorMetadataHook = AssignProperty<"useSettingAncestorMetadata", (setting: string) => Ancestor>;
-    export type YouTab = AssignProperty<"isYouTabEnabled", IsYouTabEnabled>
-        & AssignProperty<"useIsYouTabEnabled", UseIsYouTabEnabled>;
-
+    export type SettingsOverviewScreenLayout = AssignProperty<"useSettingsOverviewScreenLayout", useSettingsOverviewScreenLayout>
     export type Configurations = {
         SETTING_RELATIONSHIPS: Record<Upper, Upper| null>;
         SETTING_RENDERER_CONFIGS: Record<Upper, Configuration>;
-        getSettingTitle: (setting: string) => Title;
-        getSettingTitles: Callback<Record<Upper, Title>>;
-        transformSettingTitle: (title: Title) => Title;
+        getSettingTitleConfig: Callback<Record<Upper, Title>>;
     };
 
     export * as default from "@you/props";
@@ -36,24 +30,14 @@ declare module "@you/props" {
 declare module "@you/functions" {
     import { Scenes } from "@you/config";
     import { Callback } from "@you/utilities";
+    import { Route, Title } from "@you/data";
     import { ReactElement } from "react";
 
     export type GetScreens = (UserID: string) => Scenes;
-
-    export type IsYouTabEnabled = Callback<boolean>;
-    export type UseIsYouTabEnabled = Callback<boolean>;
-
+    export type useSettingsOverviewScreenLayout = Callback<({ title: Title, settings: Route[] })[]>
     export type FunctionalComponent = Callback<ReactElement>;
 
     export * as default from "@you/functions";
-}
-
-declare module "@you/modules" {
-    import { ReactElement } from "react";
-
-    export type SettingsOverviewScreen = { default: (self: typeof globalThis, args: any[]) => ReactElement };
-
-    export * as default from "@you/modules";
 }
 
 declare module "@you/config" {
@@ -88,14 +72,13 @@ declare module "@you/data" {
     export type Title = string | null;
     export type Icon = { uri: string } | number | null;
     export type Breadcrumbs = (string | undefined)[];
-    export type Ancestor =  ({ breadcrumbs: Breadcrumbs, route: Route }) | null;
     
     export * as default from "@you/data";
 }
 
 declare module "@you/settings" {
     import { ExtractSetT } from "@you/utilities";
-    import { Route, Title, Icon, Breadcrumbs as Breadcrumb, Ancestor, Upper } from "@you/data";
+    import { Route, Title, Icon, Breadcrumbs as Breadcrumb, Upper } from "@you/data";
 
     export type Set<T> = {
         general: T;
@@ -110,7 +93,6 @@ declare module "@you/settings" {
     export type Icons = Set<Icon>;
     export type Breadcrumbs = Set<Breadcrumb>;
     export type Relationships = Set<string | null>
-    export type Ancestors = Set<Ancestor>;
 
     export type Data = Set<{
         upper: ExtractSetT<Uppers>;
@@ -118,7 +100,6 @@ declare module "@you/settings" {
         title: ExtractSetT<Titles>;
         icon: ExtractSetT<Icons>;
         relationship: ExtractSetT<Relationships>,
-        ancestor: ExtractSetT<Ancestors>;
     }>;
 
     export * as default from "@you/settings";

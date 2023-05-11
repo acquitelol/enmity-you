@@ -19,8 +19,8 @@ const EnmityYou: Plugin = {
 
       // Patch everything else such as UI and Titles
       patchTitles(Patcher);
-      patchMisc(Patcher);
       patchRender(Patcher);
+      patchMisc();
 
       // Patch Screens which requires a valid current user
       if (Users.getCurrentUser()) {

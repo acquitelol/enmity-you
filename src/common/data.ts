@@ -3,7 +3,6 @@ import { getIDByName } from "enmity/api/assets";
 import { 
     Relationships,
     Breadcrumbs,
-    Ancestors, 
     Uppers, 
     Titles,
     Routes,
@@ -53,15 +52,6 @@ export const relationships: Relationships = {
     page: null
 };
 
-export const ancestors: Ancestors = Object.entries(routes)
-    .map(([key, value]) => ({
-        [key]: {
-            breadcrumbs: breadcrumbs[key],
-            route: value
-        }
-    }))
-    .reduce((acc, obj) => ({ ...acc, ...obj }), {}) as unknown as Ancestors;
-
 export const data: Data = Object.keys(routes)
     .map(key => ({
         [key]: {
@@ -69,8 +59,7 @@ export const data: Data = Object.keys(routes)
             route: routes[key],
             title: titles[key],
             icon: icons[key],
-            relationship: relationships[key],
-            ancestor: ancestors[key]
+            relationship: relationships[key]
         }
     }))
     .reduce((acc, obj) => ({ ...acc, ...obj }), {}) as unknown as Data;

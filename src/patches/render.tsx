@@ -1,19 +1,17 @@
-import { getByName } from 'enmity/metro';
-import { findInReactTree } from 'enmity/utilities';
+import { getByProps } from 'enmity/metro';
 import { Patcher } from 'enmity/patcher';
 
-import { SettingsOverviewScreen } from '@you/modules';
 import { data } from '../common/data';
+import { SettingsOverviewScreenLayout } from '@you/props';
 
-const SettingsOverviewScreen: SettingsOverviewScreen = getByName("SettingsOverviewScreen", { default: false });
+const SettingsOverviewScreenLayout: SettingsOverviewScreenLayout = getByProps("useSettingsOverviewScreenLayout");
 
 export default (Patcher: Patcher) => {
-   Patcher.after(SettingsOverviewScreen, "default", (_, __, res) => {
-      const { props: { sections } } = findInReactTree(res, r => r?.type?.name === "SettingScreenLayout") ?? { props: { sections: [] } };
-      const index = sections.findIndex((item: Record<string, any>) => item?.settings.find((setting: string) => setting === "ACCOUNT"))
+   Patcher.after(SettingsOverviewScreenLayout, "useSettingsOverviewScreenLayout", (_, __, res) => {
+      const index = res.findIndex((item: Record<string, any>) => item?.settings.find((setting: string) => setting === "ACCOUNT"))
 
-      !sections.find((section: Record<string, string>) => section.title === data.general.route) && 
-         sections?.splice(index === -1 ? 1 : index + 1, 0, {
+      !res.find((section: Record<string, string>) => section.title === data.general.route) && 
+         res?.splice(index === -1 ? 1 : index + 1, 0, {
             title: data.general.route,
             settings: [data.general.upper, data.plugins.upper, data.themes.upper]
          });
