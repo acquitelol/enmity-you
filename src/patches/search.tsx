@@ -26,7 +26,7 @@ export default (Patcher: Patcher) => {
     Patcher.after(Getters, "getSettingSearchListItems", (_, [settings]: string[][], res: any[]) => {
         res = res.filter(item => !Object.values(uppers).includes(item.setting));
 
-        Object.keys(data).filter(base => base !== "page").forEach(base => {
+        Object.keys(data).filter(base => base !== "page").reverse().forEach(base => {
             const { upper, title, breadcrumbs, icon } = data[base];
 
             if (settings.includes(upper)) {
