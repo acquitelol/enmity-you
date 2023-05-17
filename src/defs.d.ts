@@ -12,12 +12,12 @@ declare module "@you" {
 }
 
 declare module "@you/props" {
-    import { Callback, AssignProperty } from "@you/utilities";
+    import { Callback } from "@you/utilities";
     import { Title, Upper } from "@you/data";
     import { Configuration } from "@you/config";
-    import { useSettingsOverviewScreenLayout } from "@you/functions";
+    import { ReactElement } from "react";
 
-    export type SettingsOverviewScreenLayout = AssignProperty<"useSettingsOverviewScreenLayout", useSettingsOverviewScreenLayout>
+    export type SettingsOverviewScreen = { default: (self: typeof globalThis, args: any[]) => ReactElement };
     export type Configurations = {
         SETTING_RELATIONSHIPS: Record<Upper, Upper| null>;
         SETTING_RENDERER_CONFIGS: Record<Upper, Configuration>;
@@ -30,11 +30,9 @@ declare module "@you/props" {
 declare module "@you/functions" {
     import { Scenes } from "@you/config";
     import { Callback } from "@you/utilities";
-    import { Route, Title } from "@you/data";
     import { ReactElement } from "react";
 
     export type GetScreens = (UserID: string) => Scenes;
-    export type useSettingsOverviewScreenLayout = Callback<({ title: Title, settings: Route[] })[]>
     export type FunctionalComponent = Callback<ReactElement>;
 
     export * as default from "@you/functions";

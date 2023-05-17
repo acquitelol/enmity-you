@@ -33,7 +33,6 @@ export default () => {
             return <Screen.render />;
         });
 
-    // Assign the main screens to the renderer configurations
     Object.assign(
         Configurations.SETTING_RENDERER_CONFIGS, 
         Object.entries({
