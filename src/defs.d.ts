@@ -84,7 +84,7 @@ declare module "@you/config" {
         text: string;
         clearText(): void;
         results: Upper[];
-    }
+    };
     export type GetSearchListItemResult = {
         type: 'setting_search_result';
         ancestorRendererData: Configuration;
@@ -94,7 +94,7 @@ declare module "@you/config" {
         icon: Icon;
         index: number;
         total: number;
-    }
+    };
 
     export * as default from "@you/config";
 }

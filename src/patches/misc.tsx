@@ -1,7 +1,7 @@
 import { getByProps } from 'enmity/metro';
+import { data, relationships } from '../common/data';
 
 import { Configurations } from '@you/props';
-import { data, relationships } from '../common/data';
 
 const Configurations: Configurations = getByProps("SETTING_RENDERER_CONFIGS");
 

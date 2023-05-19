@@ -4,7 +4,8 @@ import { data, uppers } from "../common/data";
 
 import { Configurations, Getters, Search } from "@you/props";
 import { GetSearchListItemResult, UseSettingSearchResults } from "@you/config";
-import { Keyword, Upper } from "@you/data";
+import { ExtractSetT } from "@you/utilities";
+import { Data } from "@you/settings";
 
 const Search: Search = getByProps("useSettingSearch");
 const Getters: Getters = getByProps("getSettingSearchListItems");
@@ -15,14 +16,13 @@ export default (Patcher: Patcher) => {
         res.results = res.results.filter(result => !Object.values(uppers).includes(result));
 
         Object.keys(data).filter(base => base !== "page").forEach(base => {
-            const { keywords, upper }: { keywords: Keyword, upper: Upper } = data[base];
+            const { keywords, upper }: ExtractSetT<Data> = data[base];
 
             if (
-                keywords.length > 0 && keywords.some(keyword => keyword!.toLowerCase().includes(res.text.toLowerCase()))
+                keywords.length > 0 
+                && keywords.some(keyword => keyword!.toLowerCase().includes(res.text.toLowerCase()))
                 && !res.results.find(result => result === upper)
-            ) {
-                res.results.unshift(upper);
-            }
+            ) res.results.unshift(upper);
         })
     })
 
@@ -30,7 +30,7 @@ export default (Patcher: Patcher) => {
         res = res.filter(item => !Object.values(uppers).includes(item.setting));
 
         Object.keys(data).filter(base => base !== "page").reverse().forEach(base => {
-            const { upper, title, breadcrumbs, icon } = data[base];
+            const { upper, title, breadcrumbs, icon }: ExtractSetT<Data> = data[base];
 
             if (settings.includes(upper)) {
                 res.unshift({
@@ -42,14 +42,14 @@ export default (Patcher: Patcher) => {
                     icon
                 } as GetSearchListItemResult);
 
-                res.map((item: GetSearchListItemResult, index: number, parent: typeof res) => {
-                    item.index = index;
-                    item.total = parent.length;
-                    return item;
+                res.map((value: GetSearchListItemResult, index: number, parent: typeof res) => {
+                    value.index = index;
+                    value.total = parent.length;
+                    return value;
                 })
             }
         })
 
         return res;
     })
-}
+};

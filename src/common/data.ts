@@ -7,7 +7,8 @@ import {
     Titles,
     Routes,
     Icons,
-    Data
+    Data,
+    Keywords
 } from "@you/settings";
 
 export const uppers: Uppers = {
@@ -52,10 +53,10 @@ export const relationships: Relationships = {
     page: null
 };
 
-export const keywords = {
-    general: [routes.general, titles.general],
-    plugins: [routes.general, titles.plugins],
-    themes: [routes.general, titles.themes],
+export const keywords: Keywords = {
+    general: [routes.general, titles.general!],
+    plugins: [routes.general, titles.plugins!],
+    themes: [routes.general, titles.themes!],
     page: []
 }
 
