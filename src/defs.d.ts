@@ -58,7 +58,7 @@ declare module "@you/functions" {
 }
 
 declare module "@you/config" {
-    import { Upper, Title, Breadcrumbs, Icon } from "@you/data";
+    import { Upper, Title, Breadcrumb, Icon } from "@you/data";
     import { FunctionalComponent } from "@you/functions";
 
     export type Scenes = { 
@@ -90,7 +90,7 @@ declare module "@you/config" {
         ancestorRendererData: Configuration;
         setting: Upper;
         title: Title;
-        breadcrumbs: Breadcrumbs;
+        breadcrumbs: Breadcrumb;
         icon: Icon;
         index: number;
         total: number;
@@ -104,14 +104,15 @@ declare module "@you/data" {
     export type Route = string;
     export type Title = string | null;
     export type Icon = { uri: string } | number | null;
-    export type Breadcrumbs = (string | undefined)[];
+    export type Breadcrumb = (string | undefined)[];
+    export type Keyword = (string | undefined)[];
     
     export * as default from "@you/data";
 }
 
 declare module "@you/settings" {
     import { ExtractSetT } from "@you/utilities";
-    import { Route, Title, Icon, Breadcrumbs as Breadcrumb, Upper } from "@you/data";
+    import { Route, Title, Icon, Breadcrumb, Upper, Keyword } from "@you/data";
 
     export type Set<T> = {
         general: T;
@@ -125,15 +126,17 @@ declare module "@you/settings" {
     export type Titles = Set<Title>;
     export type Icons = Set<Icon>;
     export type Breadcrumbs = Set<Breadcrumb>;
-    export type Relationships = Set<string | null>
+    export type Relationships = Set<Upper | null>;
+    export type Keywords = Set<Keyword>;
 
     export type Data = Set<{
         upper: ExtractSetT<Uppers>;
         route: ExtractSetT<Routes>;
         title: ExtractSetT<Titles>;
         icon: ExtractSetT<Icons>;
-        relationship: ExtractSetT<Relationships>,
-        breadcrumbs: ExtractSetT<Breadcrumbs>
+        relationship: ExtractSetT<Relationships>;
+        breadcrumbs: ExtractSetT<Breadcrumbs>;
+        keywords: ExtractSetT<Keywords>;
     }>;
 
     export * as default from "@you/settings";

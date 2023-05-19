@@ -52,6 +52,13 @@ export const relationships: Relationships = {
     page: null
 };
 
+export const keywords = {
+    general: [routes.general, titles.general],
+    plugins: [routes.general, titles.plugins],
+    themes: [routes.general, titles.themes],
+    page: []
+}
+
 export const data: Data = Object.keys(routes)
     .map(key => ({
         [key]: {
@@ -60,7 +67,8 @@ export const data: Data = Object.keys(routes)
             title: titles[key],
             icon: icons[key],
             relationship: relationships[key],
-            breadcrumbs: breadcrumbs[key]
+            breadcrumbs: breadcrumbs[key],
+            keywords: keywords[key]
         }
     }))
     .reduce((acc, obj) => ({ ...acc, ...obj }), {}) as unknown as Data;
