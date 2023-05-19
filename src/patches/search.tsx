@@ -25,8 +25,7 @@ export default (Patcher: Patcher) => {
         })
     })
 
-    Patcher.after(Getters, "getSettingSearchListItems", (_, args, res: GetSearchListItemResult[]) => {
-        const [settings]: [UseSettingSearchResults["results"]] = args[0];
+    Patcher.after(Getters, "getSettingSearchListItems", (_, [settings], res: GetSearchListItemResult[]) => {
         res = res.filter(item => !Object.values(uppers).includes(item.setting));
 
         Object.keys(data).filter(base => base !== "page").reverse().forEach(base => {
