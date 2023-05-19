@@ -1,4 +1,4 @@
-import { React, Users } from 'enmity/metro/common';
+import { React } from 'enmity/metro/common';
 import { getByProps, getByName } from 'enmity/metro';
 import { View } from 'enmity/components';
 import { data } from '../common/data';
@@ -11,7 +11,7 @@ const getScreens: GetScreens = getByName("getScreens");
 const Configurations: Configurations = getByProps("SETTING_RENDERER_CONFIGS");
 
 export default () => {
-    const { Enmity, EnmityPlugins, EnmityThemes }: Scenes = getScreens(Users.getCurrentUser());
+    const { Enmity, EnmityPlugins, EnmityThemes }: Scenes = getScreens({});
     const [ Plugins, Themes ] = [ EnmityPlugins, EnmityThemes ]
         .map(Screen => ({ navigation, route }) => {
             React.useEffect(() => {

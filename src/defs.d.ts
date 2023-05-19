@@ -14,8 +14,10 @@ declare module "@you" {
 declare module "@you/props" {
     import { Callback } from "@you/utilities";
     import { Title, Upper } from "@you/data";
-    import { Configuration } from "@you/config";
+    import { Configuration, Screen, GetSearchListItemResult } from "@you/config";
+    import { UseSettingSearch } from "@you/functions";
     import { ReactElement } from "react";
+    import { FormDivider } from "enmity/components";
 
     export type SettingsOverviewScreen = { default: (self: typeof globalThis, args: any[]) => ReactElement };
     export type Configurations = {
@@ -23,23 +25,40 @@ declare module "@you/props" {
         SETTING_RENDERER_CONFIGS: Record<Upper, Configuration>;
         getSettingTitleConfig: Callback<Record<Upper, Title>>;
     };
+    export type Search = {
+        useSettingSearch: UseSettingSearch;
+    }
+    export type Getters = {
+        getSettingListItemSeparator(index: number, total: number): typeof FormDivider;
+        getSettingListItemStyle(index: number, total: number): [false, false, Record<string, any>];
+        getSettingScreens(): [Upper, Screen][];
+        getSettingSearchListItems(results: Upper[]): GetSearchListItemResult[];
+        getSettingTitle(upper: Upper): Title;
+        getSettingTitles(): [Upper, Title][];
+        onRouteSettingOnPress(parameters: { 
+            navigation: Record<string, any>; 
+            screen: Screen, 
+            canNavigate?: boolean 
+        }): undefined;
+    }
 
     export * as default from "@you/props";
 }
 
 declare module "@you/functions" {
-    import { Scenes } from "@you/config";
+    import { Scenes, UseSettingSearchResults } from "@you/config";
     import { Callback } from "@you/utilities";
     import { ReactElement } from "react";
 
-    export type GetScreens = (UserID: string) => Scenes;
+    export type GetScreens = (object: { [key: string]: any }) => Scenes;
     export type FunctionalComponent = Callback<ReactElement>;
+    export type UseSettingSearch = Callback<UseSettingSearchResults>;
 
     export * as default from "@you/functions";
 }
 
 declare module "@you/config" {
-    import { Icon } from "@you/data";
+    import { Upper, Title, Breadcrumbs, Icon } from "@you/data";
     import { FunctionalComponent } from "@you/functions";
 
     export type Scenes = { 
@@ -59,6 +78,22 @@ declare module "@you/config" {
         type: "route";
         icon: Icon;
         screen: Screen;
+    };
+    export type UseSettingSearchResults = {
+        onChangeText(): void;
+        text: string;
+        clearText(): void;
+        results: Upper[];
+    }
+    export type GetSearchListItemResult = {
+        type: 'setting_search_result';
+        ancestorRendererData: Configuration;
+        setting: Upper;
+        title: Title;
+        breadcrumbs: Breadcrumbs;
+        icon: Icon;
+        index: number;
+        total: number;
     }
 
     export * as default from "@you/config";
@@ -107,7 +142,6 @@ declare module "@you/settings" {
 declare module "@you/utilities" {
     import { Set } from "@you/settings";
 
-    export type AssignProperty<T extends string | symbol, U> = Record<T, U>;
     export type ExtractSetT<U extends Set<any>> = U extends Set<infer T> ? T : unknown;
     export type Callback<T> = () => T;
 
