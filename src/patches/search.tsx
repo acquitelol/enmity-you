@@ -30,21 +30,19 @@ export default (Patcher: Patcher) => {
             const { upper, title, breadcrumbs, icon } = data[base];
 
             if (settings.includes(upper)) {
-                res = res.map(item => {
-                    item.index += 1;
-                    item.total += 1;
-                    return item;
-                })
-            
                 res.unshift({
                     type: 'setting_search_result',
                     ancestorRendererData: Configurations.SETTING_RENDERER_CONFIGS[upper],
                     setting: upper,
                     title,
                     breadcrumbs,
-                    icon,
-                    index: 0,
-                    total: res.length + 1
+                    icon
+                })
+
+                res.map((item, index, parent) => {
+                    item.index = index;
+                    item.total = parent.length;
+                    return item;
                 })
             }
         })
