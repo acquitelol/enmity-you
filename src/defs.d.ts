@@ -12,8 +12,7 @@ declare module "@you" {
 
 declare module "@you/props" {
     import { Title, Upper } from "@you/data";
-    import { Configuration, Screen, GetSearchListItemResult } from "@you/config";
-    import { UseSettingSearch } from "@you/functions";
+    import { Configuration, Screen, UseSettingSearchResults, GetSearchListItemResult } from "@you/config";
     import { ReactElement } from "react";
     import { FormDivider } from "enmity/components";
 
@@ -21,10 +20,10 @@ declare module "@you/props" {
     export type Configurations = {
         SETTING_RELATIONSHIPS: Record<Upper, Upper| null>;
         SETTING_RENDERER_CONFIGS: Record<Upper, Configuration>;
-        getSettingTitleConfig: () => Record<Upper, Title>;
+        getSettingTitleConfig(): Record<Upper, Title>;
     };
     export type Search = {
-        useSettingSearch: UseSettingSearch;
+        useSettingSearch(): UseSettingSearchResults;
     }
     export type Getters = {
         getSettingListItemSeparator(index: number, total: number): typeof FormDivider;
@@ -44,12 +43,11 @@ declare module "@you/props" {
 }
 
 declare module "@you/functions" {
-    import { Scenes, UseSettingSearchResults } from "@you/config";
+    import { Scenes } from "@you/config";
     import { ReactElement } from "react";
 
     export type GetScreens = (object: { [key: string]: any }) => Scenes;
     export type FunctionalComponent = () => ReactElement;
-    export type UseSettingSearch = () => UseSettingSearchResults;
 
     export * as default from "@you/functions";
 }
