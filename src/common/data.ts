@@ -1,9 +1,7 @@
 import { getIDByName } from "enmity/api/assets";
 
-import { Set, Data } from "@you/settings";
+import { Set } from "@you/utilities";
 import { Upper, Route, Title, Icon, Relationship, Breadcrumb, Keyword } from "@you/data";
-
-const bases: (keyof Set<null>)[] = ["general", "plugins", "themes", "page"];
 
 export const uppers: Set<Upper> = {
     general: "ENMITY",

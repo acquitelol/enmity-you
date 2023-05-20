@@ -5,14 +5,12 @@ declare module "@you" {
     export * as functions from "@you/functions";
     export * as config from "@you/config";
     export * as data from "@you/data";
-    export * as settings from "@you/settings";
     export * as utilities from "@you/utilities";
 
     export * as default from "@you";
 }
 
 declare module "@you/props" {
-    import { Callback } from "@you/utilities";
     import { Title, Upper } from "@you/data";
     import { Configuration, Screen, GetSearchListItemResult } from "@you/config";
     import { UseSettingSearch } from "@you/functions";
@@ -23,7 +21,7 @@ declare module "@you/props" {
     export type Configurations = {
         SETTING_RELATIONSHIPS: Record<Upper, Upper| null>;
         SETTING_RENDERER_CONFIGS: Record<Upper, Configuration>;
-        getSettingTitleConfig: Callback<Record<Upper, Title>>;
+        getSettingTitleConfig: () => Record<Upper, Title>;
     };
     export type Search = {
         useSettingSearch: UseSettingSearch;
@@ -47,12 +45,11 @@ declare module "@you/props" {
 
 declare module "@you/functions" {
     import { Scenes, UseSettingSearchResults } from "@you/config";
-    import { Callback } from "@you/utilities";
     import { ReactElement } from "react";
 
     export type GetScreens = (object: { [key: string]: any }) => Scenes;
-    export type FunctionalComponent = Callback<ReactElement>;
-    export type UseSettingSearch = Callback<UseSettingSearchResults>;
+    export type FunctionalComponent = () => ReactElement;
+    export type UseSettingSearch = () => UseSettingSearchResults;
 
     export * as default from "@you/functions";
 }
@@ -111,34 +108,13 @@ declare module "@you/data" {
     export * as default from "@you/data";
 }
 
-declare module "@you/settings" {
-    import { Route, Title, Icon, Relationship, Breadcrumb, Upper, Keyword } from "@you/data";
-
+declare module "@you/utilities" {
     export type Set<T> = {
         general: T;
         plugins: T;
         themes: T;
         page: T;
     };
-
-    export type Data = Set<{
-        upper: Upper;
-        route: Route;
-        title: Title;
-        icon: Icon;
-        relationship: Relationship;
-        breadcrumbs: Breadcrumb;
-        keywords: Keyword;
-    }>;
-
-    export * as default from "@you/settings";
-}
-
-declare module "@you/utilities" {
-    import { Set } from "@you/settings";
-
-    export type Extract<U extends Set<any>> = U extends Set<infer T> ? T : unknown;
-    export type Callback<T> = () => T;
 
     export * as default from "@you/utilities";
 }
