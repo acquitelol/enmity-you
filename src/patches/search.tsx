@@ -12,8 +12,6 @@ const Getters: Getters = getByProps("getSettingSearchListItems");
 const Configurations: Configurations = getByProps("SETTING_RENDERER_CONFIGS");
 
 export default (Patcher: Patcher) => {
-    
-
     Patcher.after(Search, "useSettingSearch", (_, __, res: UseSettingSearchResults) => {
         res.results = res.results.filter(result => !Object.values(uppers).includes(result));
 
@@ -32,7 +30,7 @@ export default (Patcher: Patcher) => {
         Object.keys(data).reverse().forEach(base => {
             const { upper, title, breadcrumbs, icon }: ExtractSetT<Data> = data[base];
 
-            if (settings.includes(upper)) {
+            if (settings.includes(upper)) (
                 res.unshift({
                     type: 'setting_search_result',
                     ancestorRendererData: Configurations.SETTING_RENDERER_CONFIGS[upper],
@@ -40,13 +38,13 @@ export default (Patcher: Patcher) => {
                     title,
                     breadcrumbs,
                     icon
-                } as GetSearchListItemResult);
+                } as GetSearchListItemResult),
 
                 res.forEach((value, index, parent) => {
                     value.index = index;
                     value.total = parent.length;
-                });
-            };
+                })
+            );
         })
 
         return res;
