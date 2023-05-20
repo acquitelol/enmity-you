@@ -104,6 +104,7 @@ declare module "@you/data" {
     export type Route = string;
     export type Title = string | null;
     export type Icon = { uri: string } | number | null;
+    export type Relationship = Upper | null;
     export type Breadcrumb = (string | undefined)[];
     export type Keyword = (string | undefined)[];
     
@@ -111,8 +112,7 @@ declare module "@you/data" {
 }
 
 declare module "@you/settings" {
-    import { ExtractSetT } from "@you/utilities";
-    import { Route, Title, Icon, Breadcrumb, Upper, Keyword } from "@you/data";
+    import { Route, Title, Icon, Relationship, Breadcrumb, Upper, Keyword } from "@you/data";
 
     export type Set<T> = {
         general: T;
@@ -121,22 +121,14 @@ declare module "@you/settings" {
         page: T;
     };
 
-    export type Uppers = Set<Upper>;
-    export type Routes = Set<Route>;
-    export type Titles = Set<Title>;
-    export type Icons = Set<Icon>;
-    export type Breadcrumbs = Set<Breadcrumb>;
-    export type Relationships = Set<Upper | null>;
-    export type Keywords = Set<Keyword>;
-
     export type Data = Set<{
-        upper: ExtractSetT<Uppers>;
-        route: ExtractSetT<Routes>;
-        title: ExtractSetT<Titles>;
-        icon: ExtractSetT<Icons>;
-        relationship: ExtractSetT<Relationships>;
-        breadcrumbs: ExtractSetT<Breadcrumbs>;
-        keywords: ExtractSetT<Keywords>;
+        upper: Upper;
+        route: Route;
+        title: Title;
+        icon: Icon;
+        relationship: Relationship;
+        breadcrumbs: Breadcrumb;
+        keywords: Keyword;
     }>;
 
     export * as default from "@you/settings";
@@ -145,7 +137,7 @@ declare module "@you/settings" {
 declare module "@you/utilities" {
     import { Set } from "@you/settings";
 
-    export type ExtractSetT<U extends Set<any>> = U extends Set<infer T> ? T : unknown;
+    export type Extract<U extends Set<any>> = U extends Set<infer T> ? T : unknown;
     export type Callback<T> = () => T;
 
     export * as default from "@you/utilities";

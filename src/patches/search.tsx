@@ -4,8 +4,6 @@ import { data, uppers } from "../common/data";
 
 import { Configurations, Getters, Search } from "@you/props";
 import { GetSearchListItemResult, UseSettingSearchResults } from "@you/config";
-import { ExtractSetT } from "@you/utilities";
-import { Data } from "@you/settings";
 
 const Search: Search = getByProps("useSettingSearch");
 const Getters: Getters = getByProps("getSettingSearchListItems");
@@ -16,7 +14,7 @@ export default (Patcher: Patcher) => {
         res.results = res.results.filter(result => !Object.values(uppers).includes(result));
 
         Object.keys(data).forEach(base => {
-            const { keywords, upper }: ExtractSetT<Data> = data[base];
+            const { keywords, upper } = data[base];
 
             if (keywords.length > 0 
                 && keywords.some(keyword => keyword!.toLowerCase().includes(res.text.toLowerCase()))
@@ -28,7 +26,7 @@ export default (Patcher: Patcher) => {
         res = res.filter(item => !Object.values(uppers).includes(item.setting));
 
         Object.keys(data).reverse().forEach(base => {
-            const { upper, title, breadcrumbs, icon }: ExtractSetT<Data> = data[base];
+            const { upper, title, breadcrumbs, icon } = data[base];
 
             if (settings.includes(upper)) (
                 res.unshift({

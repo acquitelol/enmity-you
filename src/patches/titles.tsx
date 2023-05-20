@@ -3,7 +3,6 @@ import { Patcher } from 'enmity/patcher';
 import { data } from '../common/data';
 
 import { Configurations } from '@you/props';
-import { Titles } from '@you/settings';
 
 const Titles: Configurations = getByProps("getSettingTitleConfig");
 
