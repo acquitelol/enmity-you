@@ -1,11 +1,11 @@
-import { Locale } from 'enmity/metro/common';
-import { getByName } from 'enmity/metro';
-import { findInReactTree } from 'enmity/utilities';
-import { Patcher } from 'enmity/patcher';
-import { data } from '../common/data';
+import { Locale } from "enmity/metro/common";
+import { getByName } from "enmity/metro";
+import { findInReactTree } from "enmity/utilities";
+import { Patcher } from "enmity/patcher";
+import { data } from "../common/data";
 
-import { SettingsOverviewScreen } from '@you/props';
-import { Upper } from '@you/data';
+import { SettingsOverviewScreen } from "@you/modules";
+import { Upper } from "@you/data";
 
 const SettingsOverviewScreen: SettingsOverviewScreen = getByName("SettingsOverviewScreen", { default: false });
 

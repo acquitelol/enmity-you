@@ -1,11 +1,11 @@
-import { React } from 'enmity/metro/common';
-import { getByProps, getByName } from 'enmity/metro';
-import { View } from 'enmity/components';
-import { data } from '../common/data';
+import { React } from "enmity/metro/common";
+import { getByProps, getByName } from "enmity/metro";
+import { View } from "enmity/components";
+import { data } from "../common/data";
 
-import { Configurations } from '@you/props';
-import { Scenes } from '@you/config';
-import { GetScreens } from '@you/functions';
+import { Configurations } from "@you/modules";
+import { Scenes } from "@you/config";
+import { GetScreens } from "@you/functions";
 
 const getScreens: GetScreens = getByName("getScreens");
 const Configurations: Configurations = getByProps("SETTING_RENDERER_CONFIGS");

@@ -2,7 +2,7 @@ import { getByProps } from "enmity/metro";
 import { Patcher } from "enmity/patcher";
 import { data, uppers } from "../common/data";
 
-import { Configurations, Getters, Search } from "@you/props";
+import { Configurations, Getters, Search } from "@you/modules";
 import { GetSearchListItemResult, UseSettingSearchResults } from "@you/config";
 
 const Search: Search = getByProps("useSettingSearch");

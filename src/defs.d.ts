@@ -1,7 +1,7 @@
 /// <reference types="react" />
 
 declare module "@you" {
-    export * as props from "@you/props";
+    export * as modules from "@you/modules";
     export * as functions from "@you/functions";
     export * as config from "@you/config";
     export * as data from "@you/data";
@@ -10,7 +10,7 @@ declare module "@you" {
     export * as default from "@you";
 }
 
-declare module "@you/props" {
+declare module "@you/modules" {
     import { Title, Upper } from "@you/data";
     import { Configuration, Screen, UseSettingSearchResults, GetSearchListItemResult } from "@you/config";
     import { ReactElement } from "react";
@@ -39,7 +39,7 @@ declare module "@you/props" {
         }): undefined;
     }
 
-    export * as default from "@you/props";
+    export * as default from "@you/modules";
 }
 
 declare module "@you/functions" {
@@ -81,7 +81,7 @@ declare module "@you/config" {
         results: Upper[];
     };
     export type GetSearchListItemResult = {
-        type: 'setting_search_result';
+        type: "setting_search_result";
         ancestorRendererData: Configuration;
         setting: Upper;
         title: Title;
