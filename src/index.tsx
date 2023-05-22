@@ -18,10 +18,14 @@ const EnmityYou: Plugin = {
     ...manifest,
 
     onStart() {
-        unfreeze("SETTING_RENDERER_CONFIGS", "SETTING_RELATIONSHIPS");
+        try {
+            unfreeze("SETTING_RENDERER_CONFIGS", "SETTING_RELATIONSHIPS");
 
-        [patchMisc, patchTitles, patchRender, patchScreens, patchSearch]
-            .forEach(callback => callback({ Patcher, Configurations }));
+            [patchMisc, patchTitles, patchRender, patchScreens, patchSearch]
+                .forEach(callback => callback({ Patcher, Configurations }));
+        } catch (e) {
+            console.error(e);
+        }
     },
 
     onStop() {
