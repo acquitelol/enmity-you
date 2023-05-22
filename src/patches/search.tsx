@@ -1,32 +1,33 @@
 import { getByProps } from "enmity/metro";
-import { Patcher } from "enmity/patcher";
-import { data, uppers } from "../common/data";
 
-import { Configurations, Getters, Search } from "@you/modules";
-import { GetSearchListItemResult, UseSettingSearchResults } from "@you/config";
+import { data, uppers } from "../data";
+import { Getters, Search } from "@you/modules";
+import { Patch } from "@you/functions";
+import { 
+    GetSearchListItemResult, 
+    UseSettingSearchResults 
+} from "@you/config";
 
 const Search: Search = getByProps("useSettingSearch");
 const Getters: Getters = getByProps("getSettingSearchListItems");
-const Configurations: Configurations = getByProps("SETTING_RENDERER_CONFIGS");
 
-export default (Patcher: Patcher) => {
+export default ({ Patcher, Configurations }: Patch) => {
     Patcher.after(Search, "useSettingSearch", (_, __, res: UseSettingSearchResults) => {
         res.results = res.results.filter(result => !Object.values(uppers).includes(result));
 
-        Object.keys(data).forEach(base => {
-            const { keywords, upper } = data[base];
+        Object.keys(data).filter(key => key !== "page").forEach(key => {
+            const { upper, title } = data[key];
 
-            if (keywords.length > 0 
-                && keywords.some(keyword => keyword!.toLowerCase().includes(res.text.toLowerCase()))
+            if ([data.general.upper, title].some(keyword => keyword.toLowerCase().includes(res.text.toLowerCase()))
                 && !res.results.find(result => result === upper)) res.results.unshift(upper);
-        })
-    })
+        });
+    });
 
     Patcher.after(Getters, "getSettingSearchListItems", (_, [settings], res: GetSearchListItemResult[]) => {
         res = res.filter(item => !Object.values(uppers).includes(item.setting));
 
-        Object.keys(data).reverse().forEach(base => {
-            const { upper, title, breadcrumbs, icon } = data[base];
+        Object.keys(data).reverse().forEach(key => {
+            const { upper, title, breadcrumbs, icon } = data[key];
 
             if (settings.includes(upper)) (
                 res.unshift({
@@ -46,5 +47,5 @@ export default (Patcher: Patcher) => {
         })
 
         return res;
-    })
+    });
 };

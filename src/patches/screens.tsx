@@ -1,16 +1,14 @@
 import { React } from "enmity/metro/common";
-import { getByProps, getByName } from "enmity/metro";
+import { getByName } from "enmity/metro";
 import { View } from "enmity/components";
-import { data } from "../common/data";
 
-import { Configurations } from "@you/modules";
+import { data } from "../data";
+import { GetScreens, Patch } from "@you/functions";
 import { Scenes } from "@you/config";
-import { GetScreens } from "@you/functions";
 
 const getScreens: GetScreens = getByName("getScreens");
-const Configurations: Configurations = getByProps("SETTING_RENDERER_CONFIGS");
 
-export default () => {
+export default ({ Configurations }: Patch) => {
     const { Enmity, EnmityPlugins, EnmityThemes }: Scenes = getScreens({});
     const [ Plugins, Themes ] = [ EnmityPlugins, EnmityThemes ]
         .map(Screen => ({ navigation, route }) => {
@@ -19,13 +17,9 @@ export default () => {
                     route.hasSetHeaderRight = true;
 
                     navigation.setOptions({ 
-                        headerRight: () => Screen.headerRight 
-                            ? (
-                                <View style={{ left: 12 }}>
-                                    <Screen.headerRight />
-                                </View>
-                            )
-                            : null
+                        headerRight: () => <View style={{ left: 12 }}>
+                            <Screen.headerRight />
+                        </View>
                     })
                 }
             }, []);

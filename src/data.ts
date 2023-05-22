@@ -1,7 +1,6 @@
 import { getIDByName } from "enmity/api/assets";
-
 import { Set } from "@you/utilities";
-import { Upper, Route, Title, Icon, Relationship, Breadcrumb, Keyword } from "@you/data";
+import { Upper, Route, Title, Icon, Relationship, Breadcrumbs } from "@you/data";
 
 export const uppers: Set<Upper> = {
     general: "ENMITY",
@@ -31,7 +30,7 @@ export const icons: Set<Icon> = {
     page: null
 };
 
-export const breadcrumbs: Set<Breadcrumb> = {
+export const breadcrumbs: Set<Breadcrumbs> = {
     general: [routes.general],
     plugins: [routes.general],
     themes: [routes.general],
@@ -45,24 +44,15 @@ export const relationships: Set<Relationship> = {
     page: null
 };
 
-export const keywords: Set<Keyword> = {
-    general: [routes.general, titles.general!],
-    plugins: [routes.general, titles.plugins!],
-    themes: [routes.general, titles.themes!],
-    page: []
-}
-
 export const data = Object.keys(routes)
-    .map((key) => ({
+    .map(key => ({
         [key]: {
             upper: uppers[key] as Upper,
             route: routes[key] as Route,
             title: titles[key] as Title,
             icon: icons[key] as Icon,
             relationship: relationships[key] as Relationship,
-            breadcrumbs: breadcrumbs[key] as Breadcrumb,
-            keywords: keywords[key] as Keyword
+            breadcrumbs: breadcrumbs[key] as Breadcrumbs
         }
     }))
-    .reduce((acc, obj) => 
-        ({ ...acc, ...obj }), {});
+    .reduce((acc, obj) => ({ ...acc, ...obj }), {});

@@ -7,18 +7,18 @@ import manifest from './manifest.json';
 import { defineConfig } from 'rollup';
 
 export default defineConfig({
-   input: 'src/index.tsx',
-   output: [
-      {
-         file: `dist/${manifest.name}.js`,
-         format: 'cjs',
-         strict: false
-      },
-   ],
-   plugins: [
-      nodeResolve(),
-      commonjs(),
-      json(),
-      esbuild({ minify: true, target: 'ES2019' })
-   ]
+    input: 'src/index.tsx',
+    output: [
+        {
+            file: `dist/${manifest.name}.js`,
+            format: 'cjs',
+            strict: false
+        },
+    ],
+    plugins: [
+        nodeResolve(),
+        commonjs(),
+        json(),
+        esbuild({ minify: true, target: 'ES2019' })
+    ]
 });

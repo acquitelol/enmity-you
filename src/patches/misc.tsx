@@ -1,15 +1,11 @@
-import { getByProps } from "enmity/metro";
-import { data, relationships } from "../common/data";
+import { data, relationships } from "../data";
+import { Patch } from "@you/functions";
 
-import { Configurations } from "@you/modules";
-
-const Configurations: Configurations = getByProps("SETTING_RENDERER_CONFIGS");
-
-export default () => {
+export default ({ Configurations }: Patch) => {
     Object.assign(
-        Configurations.SETTING_RELATIONSHIPS, 
+        Configurations.SETTING_RELATIONSHIPS,
         Object.keys(relationships)
-            .map(relationshipKey => ({ [data[relationshipKey].upper]: data[relationshipKey].relationship }))
+            .map(key => ({ [data[key].upper]: data[key].relationship }))
             .reduce((acc, obj) => ({ ...acc, ...obj }), {})
-    );
+   );
 };
