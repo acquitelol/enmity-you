@@ -47,11 +47,6 @@ declare module "@you/modules" {
         }): undefined;
     };
 
-    export type Section = {
-        title: Upper;
-        settings: Upper[]
-    }
-
     export * as default from "@you/modules";
 }
 
@@ -87,7 +82,7 @@ declare module "@you/config" {
 
     export type Screen = { 
         route: string;
-        getComponent: FunctionalComponent;
+        getComponent: () => FunctionalComponent;
     };
 
     export type Configuration = {
@@ -112,6 +107,11 @@ declare module "@you/config" {
         icon: Icon;
         index: number;
         total: number;
+    };
+
+    export type Section = {
+        title: Upper;
+        settings: Upper[];
     };
 
     export * as default from "@you/config";

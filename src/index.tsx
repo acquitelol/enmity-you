@@ -11,7 +11,6 @@ import patchScreens from "./patches/screens";
 import patchSearch from "./patches/search";
 
 const Patcher = create(manifest.name);
-const Configurations = getByProps("SETTING_RENDERER_CONFIGS");
 const unfreeze = (...props: string[]) => props.forEach(prop => getByProps(prop)[prop] = { ...getByProps(prop)[prop] });
 
 const EnmityYou: Plugin = {
@@ -21,6 +20,7 @@ const EnmityYou: Plugin = {
         try {
             unfreeze("SETTING_RENDERER_CONFIGS", "SETTING_RELATIONSHIPS");
 
+            const Configurations = getByProps("SETTING_RENDERER_CONFIGS");
             [patchMisc, patchTitles, patchRender, patchScreens, patchSearch]
                 .forEach(callback => callback({ Patcher, Configurations }));
         } catch (e) {

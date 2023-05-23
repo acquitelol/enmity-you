@@ -3,7 +3,8 @@ import { getByName } from "enmity/metro";
 import { findInReactTree } from "enmity/utilities";
 
 import { data } from "../data";
-import { SettingsOverviewScreen, Section } from "@you/modules";
+import { SettingsOverviewScreen } from "@you/modules";
+import { Section } from "@you/config";
 import { Patch } from "@you/functions";
 
 const SettingsOverviewScreen: SettingsOverviewScreen = getByName("SettingsOverviewScreen", { default: false });
@@ -19,7 +20,7 @@ export default ({ Patcher }: Patch) => {
                 settings: [data.general.upper, data.plugins.upper, data.themes.upper]
             });
 
-        const omittable = sections.findIndex(section => section.title === Locale.Messages.SUPPORT);
-        omittable !== -1 && sections[omittable].settings.filter(setting => setting !== "UPLOAD_DEBUG_LOGS");
+        const support = sections.find(section => section.title === Locale.Messages.SUPPORT);
+        support && (support.settings = support.settings.filter(setting => setting !== "UPLOAD_DEBUG_LOGS"));
     });
 };
