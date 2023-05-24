@@ -4,7 +4,7 @@ import { Patch } from "@you/functions";
 export default ({ Configurations }: Patch) => {
     Object.assign(
         Configurations.SETTING_RENDERER_CONFIGS, 
-        Object.entries(screens())
+        Object.entries(screens)
             .map(([key, screen]) => ({
                 [data[key].upper]: {
                     type: "route",

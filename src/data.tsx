@@ -3,6 +3,7 @@ import { getByName } from "enmity/metro";
 import { React } from "enmity/metro/common";
 import { View } from "enmity/components";
 
+import { FunctionalComponent } from '@you/functions';
 import { Screen } from "@you/config";
 import { Upper, Route, Title, Icon, Relationship, Breadcrumbs } from "@you/data";
 import { Set } from "@you/utilities";
@@ -49,58 +50,56 @@ export const relationships: Set<Relationship> = {
     page: null
 };
 
-export const screens = () => {
-    const { Enmity, EnmityPlugins, EnmityThemes } = getByName("getScreens")({});
-    const [ Plugins, Themes ] = [ EnmityPlugins, EnmityThemes ].map(
-        (Screen) => ({ navigation, route }) => {
+const { Enmity, EnmityPlugins, EnmityThemes } = getByName("getScreens")({});
+const [ Plugins, Themes ] = [ EnmityPlugins, EnmityThemes ].map(
+    (Screen) => ({ navigation, route }) => {
+        React.useEffect(() => {
+            if (!route?.hasSetHeaderRight) {
+                route.hasSetHeaderRight = true;
+                
+                navigation.setOptions({
+                    headerRight: () => (
+                        <View style={{ left: 12 }}>
+                            <Screen.headerRight />
+                        </View>
+                    ),
+                });
+            }
+        }, []);
+
+        return <Screen.render />;
+    }
+);
+
+export const screens: Set<Screen> = {
+    general: {
+        route: routes.general,
+        getComponent: () => Enmity.render,
+    },
+    plugins: {
+        route: routes.plugins,
+        getComponent: () => Plugins as FunctionalComponent,
+    },
+    themes: {
+        route: routes.themes,
+        getComponent: () => Themes as FunctionalComponent,
+    },
+    page: {
+        route: routes.page,
+        getComponent: () => (({ navigation, route: { params } }) => {
+            const Component = params.pagePanel ?? View;
+
             React.useEffect(() => {
-                if (!route?.hasSetHeaderRight) {
-                    route.hasSetHeaderRight = true;
-                    
-                    navigation.setOptions({
-                        headerRight: () => (
-                            <View style={{ left: 12 }}>
-                                <Screen.headerRight />
-                            </View>
-                        ),
-                    });
+                if (params.pageName && !params.hasSetTitle) {
+                    params.hasSetTitle = true;
+                    navigation.setOptions({ title: params.pageName });
                 }
             }, []);
-    
-            return <Screen.render />;
-        }
-    );
-  
-    return {
-        general: {
-            route: routes.general,
-            getComponent: () => Enmity.render,
-        },
-        plugins: {
-            route: routes.plugins,
-            getComponent: () => Plugins,
-        },
-        themes: {
-            route: routes.themes,
-            getComponent: () => Themes,
-        },
-        page: {
-            route: routes.page,
-            getComponent: () => ({ navigation, route: { params } }) => {
-                const Component = params.pagePanel ?? View;
 
-                React.useEffect(() => {
-                    if (params.pageName && !params.hasSetTitle) {
-                        params.hasSetTitle = true;
-                        navigation.setOptions({ title: params.pageName });
-                    }
-                }, []);
-
-                return <Component />;
-            },
-        }
-    } as Set<Screen>;
-};
+            return <Component />;
+        }) as FunctionalComponent,
+    }
+}
 
 export const data = Object.keys(routes)
     .map(key => ({
@@ -110,7 +109,8 @@ export const data = Object.keys(routes)
             title: titles[key] as Title,
             icon: icons[key] as Icon,
             relationship: relationships[key] as Relationship,
-            breadcrumbs: breadcrumbs[key] as Breadcrumbs
+            breadcrumbs: breadcrumbs[key] as Breadcrumbs,
+            screen: screens[key] as Screen
         }
     }))
     .reduce((acc, obj) => ({ ...acc, ...obj }), {});

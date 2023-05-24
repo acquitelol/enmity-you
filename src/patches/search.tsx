@@ -18,7 +18,7 @@ export default ({ Patcher, Configurations }: Patch) => {
         Object.keys(data).filter(key => key !== "page").forEach(key => {
             const { upper, title } = data[key];
 
-            if ([data.general.upper, title].some(keyword => keyword.toLowerCase().includes(res.text.toLowerCase()))
+            if ([uppers.general, title].some(keyword => keyword.toLowerCase().includes(res.text.toLowerCase()))
                 && !res.results.find(result => result === upper)) res.results.unshift(upper);
         });
     });
