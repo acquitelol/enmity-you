@@ -7,7 +7,7 @@ import manifest from './manifest.json';
 import { defineConfig } from 'rollup';
 
 export default defineConfig({
-    input: 'src/index.tsx',
+    input: 'src/index.ts',
     output: [
         {
             file: `dist/${manifest.name}.js`,

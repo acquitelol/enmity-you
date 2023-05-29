@@ -1,4 +1,4 @@
-import { screens, data } from "../data";
+import { screens, relationships, data } from "../data";
 import { Patch } from "@you/functions";
 
 export default ({ Configurations }: Patch) => {
@@ -14,4 +14,11 @@ export default ({ Configurations }: Patch) => {
             }))
             .reduce((acc, obj) => ({ ...acc, ...obj }), {})
     );
+
+    Object.assign(
+        Configurations.SETTING_RELATIONSHIPS,
+        Object.keys(relationships)
+            .map(key => ({ [data[key].upper]: data[key].relationship }))
+            .reduce((acc, obj) => ({ ...acc, ...obj }), {})
+   );
 };
