@@ -24,7 +24,7 @@ declare module "@you/modules" {
     };
 
     export type Configurations = {
-        SETTING_RELATIONSHIPS: Record<Upper, Upper| null>;
+        SETTING_RELATIONSHIPS: Record<Upper, Upper | null>;
         SETTING_RENDERER_CONFIGS: Record<Upper, Configuration>;
         getSettingTitleConfig(): Record<Upper, Title>;
     };
