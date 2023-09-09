@@ -9,42 +9,18 @@ declare module "@you" {
 }
 
 declare module "@you/modules" {
-    import { FormDivider } from "enmity/components";
     import { ReactElement } from "react";
-    import { 
-        Configuration, 
-        Screen, 
-        UseSettingSearchResults, 
-        GetSearchListItemResult 
+    import {
+        Configuration
     } from "@you/config";
-    import { Title, Upper } from "@you/data";
+    import { Upper } from "@you/data";
 
-    export type SettingsOverviewScreen = { 
-        default: (self: typeof globalThis, args: any[]) => ReactElement;
+    export type SearchableSettingsList = {
+        type: (self: typeof globalThis, args: any[]) => ReactElement;
     };
 
     export type Configurations = {
-        SETTING_RELATIONSHIPS: Record<Upper, Upper | null>;
-        SETTING_RENDERER_CONFIGS: Record<Upper, Configuration>;
-        getSettingTitleConfig(): Record<Upper, Title>;
-    };
-
-    export type Search = {
-        useSettingSearch(): UseSettingSearchResults;
-    };
-
-    export type Getters = {
-        getSettingListItemSeparator(index: number, total: number): typeof FormDivider;
-        getSettingListItemStyle(index: number, total: number): [false, false, Record<string, any>];
-        getSettingScreens(): [Upper, Screen][];
-        getSettingSearchListItems(results: Upper[]): GetSearchListItemResult[];
-        getSettingTitle(upper: Upper): Title;
-        getSettingTitles(): [Upper, Title][];
-        onRouteSettingOnPress(parameters: { 
-            navigation: Record<string, any>; 
-            screen: Screen, 
-            canNavigate?: boolean 
-        }): undefined;
+        SETTING_RENDERER_CONFIG: Record<Upper, Configuration>;
     };
 
     export * as default from "@you/modules";
@@ -70,7 +46,7 @@ declare module "@you/config" {
     import { FunctionalComponent } from "@you/functions";
     import { Upper, Title, Breadcrumbs, Icon } from "@you/data";
 
-    export type Scenes = { 
+    export type Scenes = {
         [key: string]: {
             key?: string | number;
             title: string;
@@ -80,7 +56,7 @@ declare module "@you/config" {
         }
     };
 
-    export type Screen = { 
+    export type Screen = {
         route: string;
         getComponent: () => FunctionalComponent;
     };
@@ -91,16 +67,9 @@ declare module "@you/config" {
         screen: Screen;
     };
 
-    export type UseSettingSearchResults = {
-        onChangeText(): void;
-        text: string;
-        clearText(): void;
-        results: Upper[];
-    };
-
     export type GetSearchListItemResult = {
         type: "setting_search_result";
-        ancestorRendererData: Configuration;
+        ancestorSettingData: Configuration;
         setting: Upper;
         title: Title;
         breadcrumbs: Breadcrumbs;
@@ -124,7 +93,7 @@ declare module "@you/data" {
     export type Icon = { uri: string } | number | null;
     export type Relationship = Upper | null;
     export type Breadcrumbs = (string | undefined)[];
-    
+
     export * as default from "@you/data";
 }
 

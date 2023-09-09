@@ -3,16 +3,17 @@ import { Patch } from "@you/functions";
 
 export default ({ Configurations }: Patch) => {
     Object.assign(
-        Configurations.SETTING_RENDERER_CONFIGS, 
+        Configurations.SETTING_RENDERER_CONFIG,
         Object.values(data)
-            .map(({ upper, icon, screen }) => ({ [upper]: { type: "route", icon, screen } }))
+            .map(({ upper, icon, screen, title }) => ({
+                [upper]: {
+                    type: 'route',
+                    title,
+                    parent: null,
+                    screen,
+                    icon
+                }
+            }))
             .reduce((acc, obj) => ({ ...acc, ...obj }), {})
     );
-
-    Object.assign(
-        Configurations.SETTING_RELATIONSHIPS,
-        Object.values(data)
-            .map(({ upper, relationship }) => ({ [upper]: relationship }))
-            .reduce((acc, obj) => ({ ...acc, ...obj }), {})
-   );
 };

@@ -1,29 +1,30 @@
 import { getByProps } from "enmity/metro";
 
 import { data, uppers } from "../data";
-import { Getters, Search } from "@you/modules";
 import { Patch } from "@you/functions";
-import { 
-    GetSearchListItemResult, 
-    UseSettingSearchResults 
+import {
+    GetSearchListItemResult
 } from "@you/config";
 
-const Search: Search = getByProps("useSettingSearch");
-const Getters: Getters = getByProps("getSettingSearchListItems");
+const SearchResults = getByProps('useSettingSearchResults');
+const Getters = getByProps("getSettingListSearchResultItems");
+const SearchQuery = getByProps('getSettingSearchQuery');
 
 export default ({ Patcher, Configurations }: Patch) => {
-    Patcher.after(Search, "useSettingSearch", (_, __, res: UseSettingSearchResults) => {
-        res.results = res.results.filter(result => !Object.values(uppers).includes(result));
+    Patcher.after(SearchResults, "useSettingSearchResults", (_, __, res) => {
+        res = res.filter(result => !Object.values(uppers).includes(result));
 
         Object.keys(data).filter(key => key !== "page").forEach(key => {
             const { upper, title } = data[key];
 
-            if ([uppers.general, title].some(keyword => keyword.toLowerCase().includes(res.text.toLowerCase()))
-                && !res.results.find(result => result === upper)) res.results.unshift(upper);
+            if ([uppers.general, title].some(keyword => keyword.toLowerCase().includes(SearchQuery.getSettingSearchQuery().toLowerCase()))
+                && !res.find(result => result === upper)) res.unshift(upper);
         });
+
+        return res;
     });
 
-    Patcher.after(Getters, "getSettingSearchListItems", (_, [settings], res: GetSearchListItemResult[]) => {
+    Patcher.after(Getters, "getSettingListSearchResultItems", (_, [settings], res: GetSearchListItemResult[]) => {
         res = res.filter(item => !Object.values(uppers).includes(item.setting));
 
         Object.keys(data).reverse().forEach(key => {
@@ -32,7 +33,7 @@ export default ({ Patcher, Configurations }: Patch) => {
             if (settings.includes(upper)) (
                 res.unshift({
                     type: 'setting_search_result',
-                    ancestorRendererData: Configurations.SETTING_RENDERER_CONFIGS[upper],
+                    ancestorSettingData: Configurations.SETTING_RENDERER_CONFIG[upper],
                     setting: upper,
                     title,
                     breadcrumbs,

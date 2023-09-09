@@ -43,13 +43,6 @@ export const breadcrumbs: Set<Breadcrumbs> = {
     page: []
 };
 
-export const relationships: Set<Relationship> = {
-    general: null,
-    plugins: uppers.general,
-    themes: uppers.general,
-    page: null
-};
-
 const { Enmity, EnmityPlugins, EnmityThemes } = getByName("getScreens")({});
 const [ Plugins, Themes ] = [ EnmityPlugins, EnmityThemes ].map(
     (Screen) => ({ navigation, route }) => {
@@ -108,7 +101,6 @@ export const data = Object.keys(routes)
             route: routes[key] as Route,
             title: titles[key] as Title,
             icon: icons[key] as Icon,
-            relationship: relationships[key] as Relationship,
             breadcrumbs: breadcrumbs[key] as Breadcrumbs,
             screen: screens[key] as Screen
         }

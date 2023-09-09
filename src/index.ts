@@ -5,7 +5,6 @@ import { create } from "enmity/patcher";
 import manifest from "../manifest.json";
 
 import constants from "./patches/constants";
-import titles from "./patches/titles";
 import sections from "./patches/sections";
 import search from "./patches/search";
 
@@ -26,7 +25,7 @@ const EnmityYou: Plugin = {
     onStart() {
         const Configurations = unfrozenModule("SETTING_RENDERER_CONFIGS", "SETTING_RELATIONSHIPS");
 
-        Object.entries({ constants, titles, sections, search })
+        Object.entries({ constants, sections, search })
             .forEach(([patch, callback]) => {
                 try {
                     callback({ Patcher, Configurations });

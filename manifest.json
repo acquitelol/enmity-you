@@ -1,10 +1,12 @@
 {
-   "name": "EnmityYou",
-   "version": "1.2.4",
-   "description": "Allows you to use Enmity inside of the new You Tab. Enable from DevTools Widget ➝ Design Toggles :3",
-   "authors": [{
-      "name": "Rosie<3",
-      "id": "581573474296791211"
-   }],
-   "color": "#ff91ff"
+    "name": "EnmityYou",
+    "version": "1.2.5",
+    "description": "Allows you to use Enmity inside of the new You Tab. Enable from DevTools Widget ➝ Design Toggles :3",
+    "authors": [
+        {
+            "name": "Rosie<3",
+            "id": "581573474296791211"
+        }
+    ],
+    "color": "#ff91ff"
 }
