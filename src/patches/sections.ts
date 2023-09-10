@@ -9,7 +9,8 @@ import { Patch } from "@you/functions";
 const { SearchableSettingsList }: { SearchableSettingsList: SearchableSettingsList } = getByProps('SearchableSettingsList');
 
 export default ({ Patcher }: Patch) => {
-    Patcher.after(SearchableSettingsList, "type", (_, __, [{ sections }]: [{ sections: Section[] }]) => {
+    Patcher.before(SearchableSettingsList, "type", (_, args) => {
+        const [{ sections }] = args as [{ sections: Section[] }];
         const index = sections?.findIndex(section => section.settings.find(setting => setting === "ACCOUNT"));
 
         !sections.find(section => section.label === data.general.route) &&
@@ -18,7 +19,7 @@ export default ({ Patcher }: Patch) => {
                 settings: [data.general.upper, data.plugins.upper, data.themes.upper]
             });
 
-        const support = sections.find(section => section.label === Locale.Messages.SUPPORT);
+        const support = sections.find(section => section.settings.find(setting => setting === "UPLOAD_DEBUG_LOGS"));
         support && (support.settings = support.settings.filter(setting => setting !== "UPLOAD_DEBUG_LOGS"));
     });
 };
