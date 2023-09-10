@@ -1,12 +1,12 @@
 import { Locale } from "enmity/metro/common";
-import { getByName } from "enmity/metro";
+import { getByProps } from "enmity/metro";
 
 import { data } from "../data";
 import { SearchableSettingsList } from "@you/modules";
 import { Section } from "@you/config";
 import { Patch } from "@you/functions";
 
-const { SearchableSettingsList }: { SearchableSettingsList: SearchableSettingsList } = getByName('SearchableSettingsList', { default: false });
+const { SearchableSettingsList }: { SearchableSettingsList: SearchableSettingsList } = getByProps('SearchableSettingsList');
 
 export default ({ Patcher }: Patch) => {
     Patcher.after(SearchableSettingsList, "type", (_, __, [{ sections }]: [{ sections: Section[] }]) => {

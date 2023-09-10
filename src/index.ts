@@ -23,7 +23,7 @@ const EnmityYou: Plugin = {
     ...manifest,
 
     onStart() {
-        const Configurations = unfrozenModule("SETTING_RENDERER_CONFIGS", "SETTING_RELATIONSHIPS");
+        const Configurations = unfrozenModule("SETTING_RENDERER_CONFIG");
 
         Object.entries({ constants, sections, search })
             .forEach(([patch, callback]) => {
