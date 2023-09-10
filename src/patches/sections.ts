@@ -12,13 +12,13 @@ export default ({ Patcher }: Patch) => {
     Patcher.after(SearchableSettingsList, "type", (_, __, [{ sections }]: [{ sections: Section[] }]) => {
         const index = sections?.findIndex(section => section.settings.find(setting => setting === "ACCOUNT"));
 
-        !sections.find(section => section.title === data.general.route) &&
+        !sections.find(section => section.label === data.general.route) &&
             sections.splice(index === -1 ? 1 : index + 1, 0, {
-                title: data.general.route,
+                label: data.general.route,
                 settings: [data.general.upper, data.plugins.upper, data.themes.upper]
             });
 
-        const support = sections.find(section => section.title === Locale.Messages.SUPPORT);
+        const support = sections.find(section => section.label === Locale.Messages.SUPPORT);
         support && (support.settings = support.settings.filter(setting => setting !== "UPLOAD_DEBUG_LOGS"));
     });
 };

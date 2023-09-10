@@ -79,7 +79,7 @@ declare module "@you/config" {
     };
 
     export type Section = {
-        title: Upper;
+        label: Upper;
         settings: Upper[];
     };
 
